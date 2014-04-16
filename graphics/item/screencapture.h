@@ -25,6 +25,7 @@ class QRect;
 class QDragMoveEvent;
 class ScreenAreaSelector;
 class ScreenCaptureMenu;
+class MouseCursor;
 
 class ScreenCapture : public Pixmap
 {
@@ -35,6 +36,8 @@ public:
     int type() const override;
     void advance(int phase) override;
 
+    void setIncludeCursor(bool state);
+    bool doesIncludeCursor() const;
     void setCapturedArea(const QRect &area);
     QRect capturedArea() const;
     void setScaleMode(Qt::TransformationMode mode);
@@ -53,6 +56,8 @@ private:
     QPoint topleft_;
     Qt::TransformationMode mode_;
     ScreenAreaSelector *area_selector_;
+    MouseCursor *cursor_;
+    bool include_cursor_;
     static ScreenCaptureMenu *menu_;
 };
 

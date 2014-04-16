@@ -22,6 +22,7 @@
 
 class QSpinBox;
 class QComboBox;
+class QCheckBox;
 
 class ScreenCapture;
 
@@ -35,6 +36,7 @@ public:
     void update() override;
 
 private slots:
+    void onIncludeCursor();
     void onScaleMode();
     void onFillByScaling();
     void onFillByExpandingCaptureArea();
@@ -48,6 +50,7 @@ private slots:
 
 private:
     // This class doesn't have any onwership of private members
+    QCheckBox *c_include_cursor_;
     ScreenCapture* item_;
     QComboBox *c_scalemode_;
     QSpinBox *c_x_;

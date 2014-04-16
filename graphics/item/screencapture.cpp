@@ -17,11 +17,13 @@
 
 #include "screencapture.h"
 #include "screenareaselector.h"
+#include "util/mousecursor.h"
 
 #include <QApplication>
 #include <QScreen>
 #include <QMenu>
 #include <QWidget>
+#include <QPainter>
 #include <QGraphicsScene>
 #include <QGraphicsSceneEvent>
 #include <QDebug>
@@ -33,7 +35,9 @@ ScreenCapture::ScreenCapture(const QRect &area, QGraphicsItem* parent) :
     screen_(QApplication::primaryScreen()),
     topleft_(area.topLeft()),
     mode_(Qt::FastTransformation),
-    area_selector_(0)
+    area_selector_(0),
+    cursor_(new MouseCursor),
+    include_cursor_(true)
 {
     setNativeSize(area.size());
     setSize(area.size());
@@ -46,6 +50,7 @@ ScreenCapture::ScreenCapture(const QRect &area, QGraphicsItem* parent) :
 ScreenCapture::~ScreenCapture()
 {
     delete area_selector_;
+    delete cursor_;
 }
 
 int ScreenCapture::type() const
@@ -64,12 +69,28 @@ void ScreenCapture::advance(int phase)
     QPixmap pixmap = screen_->grabWindow(0, topleft_.x(), topleft_.y(),
                                          nativeSize().width(), nativeSize().height());
 
+    if(include_cursor_) {
+        QPainter p(&pixmap);
+        cursor_->update();
+        p.drawImage(cursor_->pos(), cursor_->image());
+    }
+
     if(size() == nativeSize()) {
         // setPixmap will results in calling PropertyBase::update()
         setPixmap(pixmap);
     } else {
         setPixmap(pixmap.scaled(size(), aspectRatioMode(), mode_));
     }
+}
+
+void ScreenCapture::setIncludeCursor(bool state)
+{
+    include_cursor_ = state;
+}
+
+bool ScreenCapture::doesIncludeCursor() const
+{
+    return include_cursor_;
 }
 
 void ScreenCapture::setCapturedArea(const QRect &area)

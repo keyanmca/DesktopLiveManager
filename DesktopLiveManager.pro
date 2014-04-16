@@ -13,6 +13,11 @@ TARGET = DesktopLiveManager
 TEMPLATE = app
 LIBS += -lx264 -lmp3lame -lrtmp
 
+linux {
+    QT += x11extras
+    LIBS += -lXfixes
+}
+
 HEADERS += \
     core/mainwindow.h \
     core/streamcontroller.h \
@@ -38,7 +43,8 @@ HEADERS += \
     external/videoencoder.h \
     external/audioencoder.h \
     graphics/property/videoproperty.h \
-    core/mediaprocessor.h
+    core/mediaprocessor.h \
+    util/mousecursor.h
 
 SOURCES += \
     core/main.cpp \
@@ -66,7 +72,8 @@ SOURCES += \
     external/videoencoder.cpp \
     external/audioencoder.cpp \
     graphics/property/videoproperty.cpp \
-    core/mediaprocessor.cpp
+    core/mediaprocessor.cpp \
+    util/mousecursor.cpp
 
 FORMS    += \
     core/mainwindow.ui \

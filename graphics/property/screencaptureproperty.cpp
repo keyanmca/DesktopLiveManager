@@ -19,6 +19,9 @@
 #include "ui_propertybase.h"
 #include "../item/screencapture.h"
 
+#include <QCheckBox>
+#include <QDebug>
+
 ScreenCaptureProperty::ScreenCaptureProperty(QWidget *parent):
     PropertyBase(parent),
     item_(0),
@@ -32,6 +35,10 @@ ScreenCaptureProperty::ScreenCaptureProperty(QWidget *parent):
     QGridLayout *grid = new QGridLayout(capture);
 
     int row = 0;
+
+    c_include_cursor_ = new QCheckBox("Include Cursor", capture);
+    grid->addWidget(c_include_cursor_, row++, 0, 1, 2);
+    connect(c_include_cursor_, SIGNAL(stateChanged(int)), this, SLOT(onIncludeCursor()));
 
     grid->addWidget(new QLabel("Scale Mode", capture), row, 0);
     c_scalemode_  = new QComboBox(capture);
@@ -110,6 +117,7 @@ void ScreenCaptureProperty::update()
 {
     if(!item_) return;
     lockWith([this]() {
+        c_include_cursor_->setChecked(item_->doesIncludeCursor());
         c_scalemode_->setCurrentIndex(item_->scaleMode());
 
         QRect rect = item_->capturedArea();
@@ -120,6 +128,14 @@ void ScreenCaptureProperty::update()
     });
 
     PropertyBase::update();
+}
+
+void ScreenCaptureProperty::onIncludeCursor()
+{
+    if(!item_) return;
+    lockWith([this]() {
+        item_->setIncludeCursor(c_include_cursor_->isChecked());
+    });
 }
 
 void ScreenCaptureProperty::onScaleMode()
