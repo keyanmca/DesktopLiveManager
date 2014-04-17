@@ -26,7 +26,28 @@
 #include <QMessageBox>
 #include <QPainter>
 #include <QFile>
+#include <QDir>
 #include <QDebug>
+
+const int kResolution_16_9_Num = 6;
+const QSize kResolution_16_9[kResolution_16_9_Num] = {
+    QSize(704, 396),
+    QSize(768, 432),
+    QSize(832, 468),
+    QSize(896, 504),
+    QSize(960, 540),
+    QSize(1024, 576)
+};
+
+const int kResolution_4_3_Num = 6;
+const QSize kResolution_4_3[kResolution_4_3_Num] = {
+    QSize(704, 528),
+    QSize(768, 576),
+    QSize(832, 624),
+    QSize(896, 672),
+    QSize(960, 720),
+    QSize(1024, 768)
+};
 
 StreamController::StreamController(GraphicsController *graphics, AudioController *audio,
                                    QWidget *general_tab, QWidget *encoder_tab, QObject *parent):
@@ -48,15 +69,25 @@ StreamController::StreamController(GraphicsController *graphics, AudioController
 {
     // init ui
     general_ui->setupUi(general_tab_);
-
-    general_ui->save_to_file_->setChecked(true);
-    general_ui->dest_file_->setText(QString("/home/sk/test.flv"));
     connect(general_ui->open_dest_file_, SIGNAL(clicked()), this, SLOT(onOpenSaveFile()));
 
     encoder_ui->setupUi(encoder_tab_);
-
     connect(encoder_ui->v_size_, SIGNAL(currentIndexChanged(int)), this, SLOT(onSizeChanged()));
     connect(encoder_ui->v_framerate_, SIGNAL(valueChanged(int)), this, SLOT(onFPSChanged()));
+    for(int i = 0; i < kResolution_16_9_Num; ++i) {
+        const QSize &size = kResolution_16_9[i];
+        QString resolution =
+                QString::number(size.width()) + "x" +
+                QString::number(size.height()) + " (16:9)";
+        encoder_ui->v_size_->addItem(resolution);
+    }
+    for(int i = 0; i < kResolution_4_3_Num; ++i) {
+        const QSize &size = kResolution_4_3[i];
+        QString resolution =
+                QString::number(size.width()) + "x" +
+                QString::number(size.height()) + " (4:3)";
+        encoder_ui->v_size_->addItem(resolution);
+    }
 
     audio_->setupUi(encoder_ui->a_device_);
 
@@ -69,8 +100,11 @@ StreamController::StreamController(GraphicsController *graphics, AudioController
     // misc
     connect(&update_timer_, SIGNAL(timeout()), this, SLOT(process()));
 
-    setSize(QSize(640, 480));
     setFPS(encoder_ui->v_framerate_->value());
+    general_ui->save_to_file_->setChecked(true);
+    general_ui->dest_file_->setText(QDir::homePath() + "/live.flv");
+    encoder_ui->v_size_->setCurrentIndex(0);
+    encoder_ui->v_preset_->setCurrentIndex(5); // Medium
 }
 
 StreamController::~StreamController()
@@ -108,7 +142,7 @@ bool StreamController::start()
 
     processor_->start();
     processor_->moveToThread(&media_process_thread_);
-    media_process_thread_.start();
+    media_process_thread_.start(QThread::HighPriority);
 
     // start audioinput device
     audio_->setSampleRate(44100);
@@ -174,7 +208,8 @@ void StreamController::process()
 
 void StreamController::onOpenSaveFile()
 {
-    QString dest = QFileDialog::getSaveFileName(general_tab_, QString("Destination File"), QDir::homePath());
+    QString dest = QFileDialog::getSaveFileName(
+                general_tab_, QString("Destination File"), QDir::homePath());
     if(dest != QString()) {
         general_ui->dest_file_->setText(dest);
     }
@@ -183,16 +218,12 @@ void StreamController::onOpenSaveFile()
 void StreamController::onSizeChanged()
 {
     int index = encoder_ui->v_size_->currentIndex();
-    switch(index) {
-    case 0:
-        setSize(QSize(640, 480));
-        break;
-    case 1:
-        setSize(QSize(512, 384));
-        break;
-    default:
+    if(index < kResolution_16_9_Num) {
+        setSize(kResolution_16_9[index]);
+    } else if (index - kResolution_16_9_Num < kResolution_4_3_Num) {
+        setSize(kResolution_4_3[index - kResolution_16_9_Num]);
+    } else {
         qDebug() << "unknown index of size";
-        break;
     }
 }
 

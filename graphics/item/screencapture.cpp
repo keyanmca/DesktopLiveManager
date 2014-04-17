@@ -42,6 +42,7 @@ ScreenCapture::ScreenCapture(const QRect &area, QGraphicsItem* parent) :
 {
     setNativeSize(area.size());
     setSize(area.size());
+    setScaleMode(Qt::SmoothTransformation);
 
     connect(this, SIGNAL(requestPixmap(
                              QScreen*,QRect,QSize,bool,
@@ -53,7 +54,7 @@ ScreenCapture::ScreenCapture(const QRect &area, QGraphicsItem* parent) :
             this, SLOT(onPixmapReady(QPixmap)));
 
     capture_->moveToThread(&thread_);
-    thread_.start();
+    thread_.start(QThread::HighPriority);
 
     if(!menu_) { // init static member
         menu_ = new ScreenCaptureMenu;
@@ -192,9 +193,7 @@ void ScreenCapture::showAreaSelector()
 
 void ScreenCapture::onPixmapReady(QPixmap pixmap)
 {
-    if(pixmap.size() == size()) { // ignore when size has already benn changed
-        setPixmap(pixmap);
-    }
+    setPixmap(pixmap);
 }
 
 void ScreenCapture::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)
