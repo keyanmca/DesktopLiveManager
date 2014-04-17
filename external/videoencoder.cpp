@@ -51,7 +51,6 @@ static void convertRGB888toYUV420P(
 
 VideoEncoder::VideoEncoder(const QSize &imageSize, int fps, int bitrate, int preset_index)
 {
-    qDebug() << x264_preset_names[preset_index];
     x264_param_default_preset(&param, x264_preset_names[preset_index], "zerolatency");
 
     //param.i_log_level = X264_LOG_ERROR;
@@ -127,9 +126,6 @@ QByteArray VideoEncoder::flvSequenceHeader()
 
 bool VideoEncoder::encode(const QImage &image)
 {
-    QTime time;
-    time.start();
-
     Q_ASSERT(image.size() == QSize(param.i_width, param.i_height));
     Q_ASSERT(image.format() == QImage::Format_RGB888);
 
@@ -139,7 +135,6 @@ bool VideoEncoder::encode(const QImage &image)
     nals_size_ = x264_encoder_encode(encoder, &nals, &i_nals, &pic_in, &pic_out);
     if(nals_size_ < 0) return false;
 
-    qDebug() << "x264 encode:" << time.elapsed();
     return true;
 }
 

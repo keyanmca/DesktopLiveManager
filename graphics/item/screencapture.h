@@ -19,12 +19,14 @@
 #define SCREENCAPTURE_H
 
 #include "pixmap.h"
+#include <QThread>
 
 class QScreen;
 class QRect;
 class QDragMoveEvent;
 class ScreenAreaSelector;
 class ScreenCaptureMenu;
+class CaptureAndScale;
 class MouseCursor;
 
 class ScreenCapture : public Pixmap
@@ -48,17 +50,47 @@ public:
     void fullScreen();
     void showAreaSelector();
 
+public slots:
+    void onPixmapReady(QPixmap pixmap);
+
+signals:
+    void requestPixmap(
+            QScreen *screen,
+            QRect capture_area, QSize target_size, bool include_cursor,
+            Qt::AspectRatioMode AR_mode, Qt::TransformationMode TF_mode);
+
 protected:
     void contextMenuEvent(QGraphicsSceneContextMenuEvent *event) override;
 
 private:
+    QThread thread_;
+    CaptureAndScale *capture_;
     QScreen *screen_; // take ownership ?
     QPoint topleft_;
     Qt::TransformationMode mode_;
     ScreenAreaSelector *area_selector_;
-    MouseCursor *cursor_;
     bool include_cursor_;
     static ScreenCaptureMenu *menu_;
+};
+
+
+class CaptureAndScale : public QObject
+{
+    Q_OBJECT
+public:
+    CaptureAndScale();
+    ~CaptureAndScale();
+
+public slots:
+    void capture(QScreen *screen,
+                 QRect capture_area, QSize target_size, bool include_cursor,
+                 Qt::AspectRatioMode AR_mode, Qt::TransformationMode TF_mode);
+
+signals:
+    void pixmapReady(QPixmap pixmap);
+
+private:
+    MouseCursor *cursor_;
 };
 
 

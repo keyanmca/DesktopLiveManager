@@ -167,9 +167,9 @@ void StreamController::process()
 
     QPainter p(&rendered_);
     graphics_->render(&p);
-    requestProcessVideoData(ts, rendered_);
+    emit requestProcessVideoData(ts, rendered_);
 
-    requestProcessAudioData(ts, audio_->data());
+    emit requestProcessAudioData(ts, audio_->data());
 }
 
 void StreamController::onOpenSaveFile()
