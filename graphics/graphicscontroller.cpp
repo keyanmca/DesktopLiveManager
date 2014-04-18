@@ -16,6 +16,7 @@
  */
 
 #include "graphicscontroller.h"
+#include "ui_view.h"
 #include "itemview.h"
 #include "itemmodel.h"
 
@@ -44,17 +45,18 @@
 GraphicsController* GraphicsController::instance_ = 0;
 
 GraphicsController::GraphicsController(
-        QGraphicsView *gview, QWidget *scene_tab, QWidget *graphics_tab,QObject *parent) :
+        QWidget *view, QWidget *scene_tab, QWidget *graphics_tab,QObject *parent) :
     QObject(parent),
     scene_model_(new ItemModel(this)),
     current_(0),
     scene_view_(0),
-    graphics_view_(gview),
+    graphics_view_(0),
     null_scene_(new QGraphicsScene(this)),
     item_view_(0),
     null_model_(new ItemModel(this)),
     property_(0),
-    size_(QSize(640, 480)),
+    size_(QSize()),
+    scale_(1),
     reorder_(false)
 {
     // init scene tab
@@ -77,6 +79,9 @@ GraphicsController::GraphicsController(
     graphics_tab->setLayout(graphics_layout);
 
     // init graphics view
+    Ui::View *view_ui = new Ui::View;
+    view_ui->setupUi(view);
+    graphics_view_ = view_ui->graphics_view_;
     graphics_view_->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     graphics_view_->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     graphics_view_->setBackgroundBrush(QBrush(Qt::black));
@@ -84,6 +89,7 @@ GraphicsController::GraphicsController(
     graphics_view_->setSceneRect(0, 0, size_.width(), size_.height());
     graphics_view_->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
     graphics_view_->installEventFilter(this);
+    connect(view_ui->scale_, SIGNAL(valueChanged(int)), this, SLOT(setScale(int)));
 
     // scene Action
     QAction *add_scene = new QAction("add", this);
@@ -188,10 +194,10 @@ GraphicsController::~GraphicsController()
 }
 
 GraphicsController* GraphicsController::createInstance(
-        QGraphicsView *gview, QWidget *scene_tab, QWidget *graphics_tab, QObject *parent)
+        QWidget *view, QWidget *scene_tab, QWidget *graphics_tab, QObject *parent)
 {
     if(!instance_) {
-        instance_ = new GraphicsController(gview, scene_tab, graphics_tab, parent);
+        instance_ = new GraphicsController(view, scene_tab, graphics_tab, parent);
     }
     return instance_;
 }
@@ -374,6 +380,22 @@ void GraphicsController::removeSelectedItems()
     for(auto it = sorted.rbegin(); it != sorted.rend(); ++it) {
         removeItem(*it);
     }
+}
+
+void GraphicsController::setScale(int per)
+{
+    qreal factor = (qreal)per / 100;
+    if(scale_ == factor) return;
+    scale_ = factor;
+    graphics_view_->setTransform(QTransform::fromScale(scale_, scale_));
+    graphics_view_->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
+    graphics_view_->adjustSize();
+    QWidget *parent = graphics_view_->parentWidget();
+    while(parent) {
+        parent->adjustSize();
+        parent = parent->parentWidget();
+    }
+    graphics_view_->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 }
 
 void GraphicsController::onItemChanged(QStandardItem *item)

@@ -30,7 +30,7 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    graphics_ = GraphicsController::createInstance(ui->graphics_view_, ui->scene_tab_, ui->graphics_tab_);
+    graphics_ = GraphicsController::createInstance(ui->view_, ui->scene_tab_, ui->graphics_tab_);
     graphics_->addScene("Default");
 
     audio_ = new AudioController;

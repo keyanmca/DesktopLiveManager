@@ -43,7 +43,7 @@ class GraphicsController : public QObject
 public:
     // SINGLETON PATTERN
     static GraphicsController* createInstance(
-        QGraphicsView *gview, QWidget *scene_tab, QWidget *graphics_tab, QObject *parent = 0);
+        QWidget *view, QWidget *scene_tab, QWidget *graphics_tab, QObject *parent = 0);
     static GraphicsController* instance();
     GraphicsController(const GraphicsController&) = delete;
     GraphicsController& operator=(const GraphicsController&) = delete;
@@ -75,6 +75,7 @@ public slots:
     void removeSelectedItems();
 
 private slots:
+    void setScale(int per);
     void onItemChanged(QStandardItem *item);
 
     void selectionChangedFromGraphics();
@@ -85,7 +86,7 @@ private slots:
 private:
     class SceneItem;
 
-    GraphicsController(QGraphicsView *gview, QWidget *scene_tab, QWidget *graphics_tab, QObject *parent = 0);
+    GraphicsController(QWidget *view, QWidget *scene_tab, QWidget *graphics_tab, QObject *parent = 0);
 
     // scene
     SceneItem* sceneItem(int row);
@@ -129,6 +130,7 @@ private:
     PropertyController *property_;
 
     QSize size_;
+    qreal scale_;
 
     QMenu *scene_menu_;
     QMenu *item_menu_;

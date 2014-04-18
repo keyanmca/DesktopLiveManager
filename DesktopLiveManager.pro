@@ -82,7 +82,8 @@ FORMS    += \
     core/encoder.ui \
     graphics/property/videoproperty.ui \
     graphics/property/pictureproperty.ui \
-    graphics/property/textproperty.ui
+    graphics/property/textproperty.ui \
+    core/view.ui
 
 RESOURCES += \
     resource.qrc
