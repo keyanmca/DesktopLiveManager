@@ -70,6 +70,7 @@ public slots:
     void addPicture();
     void addText();
     void addVideo();
+    void addCamera();
     void incrementSelectedItemIndex(bool forward); // decrement if forward == false
     void removeItem(int index);
     void removeSelectedItems();

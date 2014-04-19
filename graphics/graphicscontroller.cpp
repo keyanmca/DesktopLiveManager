@@ -25,6 +25,7 @@
 #include "item/screencapture.h"
 #include "item/picture.h"
 #include "item/video.h"
+#include "item/camera.h"
 #include "item/text.h"
 
 #include "property/propertycontroller.h"
@@ -114,6 +115,8 @@ GraphicsController::GraphicsController(
     connect(add_picture, SIGNAL(triggered()), this, SLOT(addPicture()));
     QAction *add_video = new QAction("Video", this);
     connect(add_video, SIGNAL(triggered()), this, SLOT(addVideo()));
+    QAction *add_camera = new QAction("Camera", this);
+    connect(add_camera, SIGNAL(triggered()), this, SLOT(addCamera()));
     QAction *add_text = new QAction("Text", this);
     connect(add_text, SIGNAL(triggered()), this, SLOT(addText()));
 
@@ -121,6 +124,7 @@ GraphicsController::GraphicsController(
     item_add_menu->addAction(add_screencapture);
     item_add_menu->addAction(add_picture);
     item_add_menu->addAction(add_video);
+    item_add_menu->addAction(add_camera);
     item_add_menu->addAction(add_text);
 
     QAction *item_remove = new QAction("Remove", this);
@@ -337,6 +341,12 @@ void GraphicsController::addVideo()
 {
     Video *video = new Video;
     addItem(video, "video");
+}
+
+void GraphicsController::addCamera()
+{
+    Camera *camera = new Camera;
+    addItem(camera, "camera");
 }
 
 void GraphicsController::incrementSelectedItemIndex(bool forward)

@@ -32,6 +32,7 @@ enum Type
     SCREEN_CAPTURE = QGraphicsItem::UserType + 1,
     PICTURE,
     VIDEO,
+    CAMERA,
     TEXT
 };
 

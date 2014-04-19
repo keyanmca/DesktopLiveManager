@@ -232,7 +232,7 @@ void CaptureAndScale::capture(
     if(include_cursor) {
         QPainter p(&pixmap);
         cursor_->update();
-        p.drawImage(cursor_->pos(), cursor_->image());
+        p.drawImage(cursor_->pos() - capture_area.topLeft(), cursor_->image());
     }
 
     if(target_size == capture_area.size()) {

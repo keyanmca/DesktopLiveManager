@@ -20,11 +20,13 @@
 #include "../item/screencapture.h"
 #include "../item/picture.h"
 #include "../item/video.h"
+#include "../item/camera.h"
 #include "../item/text.h"
 #include "propertybase.h"
 #include "screencaptureproperty.h"
 #include "pictureproperty.h"
 #include "videoproperty.h"
+#include "cameraproperty.h"
 #include "textproperty.h"
 
 #include <QVBoxLayout>
@@ -39,6 +41,7 @@ PropertyController::PropertyController(QWidget *property, QObject *parent) :
     p_sc_(0),
     p_picture_(0),
     p_video_(0),
+    p_camera_(0),
     p_text_(0)
 {
     property->setLayout(property_);
@@ -103,6 +106,17 @@ void PropertyController::setItem(QGraphicsItem *item)
 
             p_video_->setItem(video);
             current_ = p_video_;
+        }
+        break;
+    case GraphicsItem::CAMERA:
+        Camera *camera;
+        if((camera = dynamic_cast<Camera*>(item))) {
+            if(!p_camera_) {
+                p_camera_ = new CameraProperty;
+            }
+
+            p_camera_->setItem(camera);
+            current_ = p_camera_;
         }
         break;
     case GraphicsItem::TEXT:

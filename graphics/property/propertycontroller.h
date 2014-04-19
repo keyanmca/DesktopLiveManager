@@ -26,7 +26,8 @@ class QGraphicsItem;
 class PropertyBase;
 class ScreenCaptureProperty;
 class PictureProperty;
-class VideoProperty; // TODO
+class VideoProperty;
+class CameraProperty;
 class TextProperty;
 
 class PropertyController : public QObject
@@ -44,6 +45,7 @@ private:
     ScreenCaptureProperty *p_sc_;
     PictureProperty *p_picture_;
     VideoProperty *p_video_;
+    CameraProperty *p_camera_;
     TextProperty *p_text_;
 };
 

@@ -44,7 +44,9 @@ HEADERS += \
     external/audioencoder.h \
     graphics/property/videoproperty.h \
     core/mediaprocessor.h \
-    util/mousecursor.h
+    util/mousecursor.h \
+    graphics/item/camera.h \
+    graphics/property/cameraproperty.h
 
 SOURCES += \
     core/main.cpp \
@@ -73,7 +75,9 @@ SOURCES += \
     external/audioencoder.cpp \
     graphics/property/videoproperty.cpp \
     core/mediaprocessor.cpp \
-    util/mousecursor.cpp
+    util/mousecursor.cpp \
+    graphics/item/camera.cpp \
+    graphics/property/cameraproperty.cpp
 
 FORMS    += \
     core/mainwindow.ui \
@@ -83,7 +87,8 @@ FORMS    += \
     graphics/property/videoproperty.ui \
     graphics/property/pictureproperty.ui \
     graphics/property/textproperty.ui \
-    core/view.ui
+    core/view.ui \
+    graphics/property/cameraproperty.ui
 
 RESOURCES += \
     resource.qrc
