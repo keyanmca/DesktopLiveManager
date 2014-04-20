@@ -64,6 +64,8 @@ void TextProperty::update()
         text_ui->color_->setText(item_->defaultTextColor().name());
         text_ui->text_->setText(item_->toPlainText());
     });
+
+    PropertyBase::update();
 }
 
 void TextProperty::onLWidth()

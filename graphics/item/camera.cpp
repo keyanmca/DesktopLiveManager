@@ -1,18 +1,95 @@
 #include "camera.h"
 
 #include <QCamera>
+#include <QMenu>
+#include <QGraphicsSceneEvent>
+#include <QDebug>
+
+CameraMenu* Camera::menu_ = 0;
 
 Camera::Camera(QGraphicsItem *parent) :
     QGraphicsVideoItem(parent),
     IGraphicsItem(this),
     camera_(0)
 {
+    setAcceptHoverEvents(true);
+
+    if(!menu_) { // init static member
+        menu_ = new CameraMenu;
+    }
 }
 
 Camera::~Camera()
 {
     stop();
     delete camera_;
+}
+
+QSize Camera::nativeSize() const
+{
+    QSizeF s = QGraphicsVideoItem::nativeSize();
+    return QSize(s.width(), s.height());
+}
+
+void Camera::setAspectRatioMode(Qt::AspectRatioMode mode)
+{
+    QGraphicsVideoItem::setAspectRatioMode(mode);
+}
+
+Qt::AspectRatioMode Camera::aspectRatioMode() const
+{
+    return QGraphicsVideoItem::aspectRatioMode();
+}
+
+void Camera::setSize(const QSize &size)
+{
+    QGraphicsVideoItem::setSize(size);
+}
+
+QSize Camera::size() const
+{
+    QSizeF s = QGraphicsVideoItem::size();
+    return QSize(s.width(), s.height());
+}
+
+void Camera::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)
+{
+    menu_->setItem(this);
+    menu_->menu()->exec(event->screenPos());
+}
+
+bool Camera::sceneEventFilter(QGraphicsItem *watched, QEvent *event)
+{
+    return onSceneEventFilter(watched, event);
+}
+
+void Camera::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
+{
+    onHoverEnterEvent(event);
+}
+
+void Camera::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
+{
+    onHoverLeaveEvent(event);
+}
+
+void Camera::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
+{
+    if(position() != GraphicsItem::MANUAL) {
+        setPosition(GraphicsItem::MANUAL);
+    }
+    QGraphicsItem::mouseMoveEvent(event);
+}
+
+void Camera::wheelEvent(QGraphicsSceneWheelEvent *event)
+{
+    onWheelEvent(event);
+}
+
+QVariant Camera::itemChange(QGraphicsItem::GraphicsItemChange change, const QVariant &value)
+{
+    onItemChange(change, value);
+    return QGraphicsVideoItem::itemChange(change, value);
 }
 
 int Camera::type() const
@@ -39,4 +116,22 @@ void Camera::stop()
 {
     if(!camera_) return;
     camera_->stop();
+}
+
+
+CameraMenu::CameraMenu(QObject *parent) :
+    CommonMenu(parent)
+{
+}
+
+void CameraMenu::setItem(Camera *item)
+{
+    CommonMenu::setItem(item);
+    item_ = item;
+}
+
+void CameraMenu::reset()
+{
+    item_ = 0;
+    CommonMenu::reset();
 }

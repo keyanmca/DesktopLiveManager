@@ -78,6 +78,8 @@ void VideoProperty::update()
         video_ui->v_progress_->setValue(pos);
         video_ui->v_volume_->setValue(player->volume());
     });
+
+    PropertyBase::update();
 }
 
 void VideoProperty::updateProgressBar()

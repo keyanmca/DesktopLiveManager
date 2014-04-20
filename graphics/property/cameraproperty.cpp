@@ -43,6 +43,8 @@ void CameraProperty::update()
     if(!item_) return;
     lockWith([&]() {
     });
+
+    PropertyBase::update();
 }
 
 void CameraProperty::onStart()

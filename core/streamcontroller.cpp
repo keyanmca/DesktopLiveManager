@@ -29,14 +29,15 @@
 #include <QDir>
 #include <QDebug>
 
-const int kResolution_16_9_Num = 6;
+const int kResolution_16_9_Num = 7;
 const QSize kResolution_16_9[kResolution_16_9_Num] = {
     QSize(704, 396),
     QSize(768, 432),
     QSize(832, 468),
     QSize(896, 504),
     QSize(960, 540),
-    QSize(1024, 576)
+    QSize(1024, 576),
+    QSize(1920, 1080)
 };
 
 const int kResolution_4_3_Num = 6;
@@ -46,7 +47,7 @@ const QSize kResolution_4_3[kResolution_4_3_Num] = {
     QSize(832, 624),
     QSize(896, 672),
     QSize(960, 720),
-    QSize(1024, 768)
+    QSize(1024, 768),
 };
 
 StreamController::StreamController(GraphicsController *graphics, AudioController *audio,
