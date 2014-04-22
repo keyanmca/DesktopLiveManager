@@ -18,11 +18,11 @@
 #ifndef PIXMAP_H
 #define PIXMAP_H
 
-#include "igraphicsitem.h"
+#include "graphicsitem.h"
 
 #include <QGraphicsPixmapItem>
 
-class Pixmap : public QGraphicsPixmapItem, public IGraphicsItem
+class Pixmap : public GraphicsItem<QGraphicsPixmapItem>
 {
 public:
     virtual ~Pixmap() override;
@@ -38,12 +38,6 @@ public:
 
 protected:
     Pixmap(QGraphicsItem *parent = 0);
-    virtual bool sceneEventFilter(QGraphicsItem *watched, QEvent *event) override;
-    virtual void hoverEnterEvent(QGraphicsSceneHoverEvent *event) override;
-    virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent *event) override;
-    virtual void mouseMoveEvent(QGraphicsSceneMouseEvent * event) override;
-    virtual void wheelEvent(QGraphicsSceneWheelEvent *event) override;
-    virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
 
 private:
     QSize native_size_;

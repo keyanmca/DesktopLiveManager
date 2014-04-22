@@ -29,7 +29,7 @@ public:
     explicit GraphicsScene(QObject *parent = 0);
 
 public slots:
-    void setSelectedItemsPosition(GraphicsItem::Position pos);
+    void setSelectedItemsPosition(IGraphicsItem::Position pos);
     void setSelectedItemsDefaultSize();
 
 protected:

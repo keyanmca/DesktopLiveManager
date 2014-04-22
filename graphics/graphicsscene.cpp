@@ -29,7 +29,7 @@ GraphicsScene::GraphicsScene(QObject *parent) :
 {
 }
 
-void GraphicsScene::setSelectedItemsPosition(GraphicsItem::Position pos)
+void GraphicsScene::setSelectedItemsPosition(IGraphicsItem::Position pos)
 {
     for(auto i : selectedItems()) {
         IGraphicsItem *item = dynamic_cast<IGraphicsItem*>(i);

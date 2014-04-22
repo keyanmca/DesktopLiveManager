@@ -132,23 +132,23 @@ GraphicsController::GraphicsController(
 
     QAction *center = new QAction("Center", this);
     connect(center, &QAction::triggered, [&]() {
-        if(current_) { current_->scene()->setSelectedItemsPosition(GraphicsItem::CENTER);}
+        if(current_) { current_->scene()->setSelectedItemsPosition(IGraphicsItem::CENTER);}
     });
     QAction *top_left = new QAction("Top Left", this);
     connect(top_left, &QAction::triggered, [&]() {
-        if(current_) { current_->scene()->setSelectedItemsPosition(GraphicsItem::TOP_LEFT);}
+        if(current_) { current_->scene()->setSelectedItemsPosition(IGraphicsItem::TOP_LEFT);}
     });
     QAction *top_right = new QAction("Top Right", this);
     connect(top_right, &QAction::triggered, [&]() {
-        if(current_) { current_->scene()->setSelectedItemsPosition(GraphicsItem::TOP_RIGHT);}
+        if(current_) { current_->scene()->setSelectedItemsPosition(IGraphicsItem::TOP_RIGHT);}
     });
     QAction *bottom_left = new QAction("Bottom Left", this);
     connect(bottom_left, &QAction::triggered, [&]() {
-        if(current_) { current_->scene()->setSelectedItemsPosition(GraphicsItem::BOTTOM_LEFT);}
+        if(current_) { current_->scene()->setSelectedItemsPosition(IGraphicsItem::BOTTOM_LEFT);}
     });
     QAction *bottom_right = new QAction("Bottom Right", this);
     connect(bottom_right, &QAction::triggered, [&]() {
-        if(current_) { current_->scene()->setSelectedItemsPosition(GraphicsItem::BOTTOM_RIGHT);}
+        if(current_) { current_->scene()->setSelectedItemsPosition(IGraphicsItem::BOTTOM_RIGHT);}
     });
 
     QMenu *pos_menu = new QMenu("Position");

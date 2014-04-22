@@ -142,7 +142,7 @@ void MediaProcessor::processAudioData(int timestamp_ms, QByteArray pcm_data)
     audio_encoder_->write(pcm_data);
     QByteArray encoded = audio_encoder_->readAll();
     if(encoded != QByteArray()) {
-        //qDebug() << "audio:" << timestamp_ms << encoded.size();
+        qDebug() << "audio:" << timestamp_ms << encoded.size();
         flv_formatter_->writeMP3(encoded.data(), encoded.size(), timestamp_ms);
     }
 
@@ -155,7 +155,7 @@ void MediaProcessor::processVideoData(int timestamp_ms, QImage data)
 
     video_encoder_->encode(data);
     if(video_encoder_->getFrameSize() != 0) {
-        //qDebug() << "video:" << timestamp_ms << video_encoder_->getFrameSize();
+        qDebug() << "video:" << timestamp_ms << video_encoder_->getFrameSize();
         flv_formatter_->writeH264(
                     video_encoder_->getData(), video_encoder_->getFrameSize(),
                     video_encoder_->isKeyFrame(), AVC_NALU, timestamp_ms);

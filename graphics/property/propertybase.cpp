@@ -92,7 +92,7 @@ void PropertyBase::onLPos(int index)
 {
     if(!item_) return;
     lockWith([&]() {
-        item_->setPosition((GraphicsItem::Position)index);
+        item_->setPosition((IGraphicsItem::Position)index);
     });
     update();
 }
@@ -101,7 +101,7 @@ void PropertyBase::onLX()
 {
     if(!item_) return;
     lockWith([this]() {
-        item_->setPosition(GraphicsItem::MANUAL);
+        item_->setPosition(IGraphicsItem::MANUAL);
         qitem_->setX(ui->l_x_->value());
     });
     update();
@@ -111,7 +111,7 @@ void PropertyBase::onLY()
 {
     if(!item_) return;
     lockWith([this]() {
-        item_->setPosition(GraphicsItem::MANUAL);
+        item_->setPosition(IGraphicsItem::MANUAL);
         qitem_->setY(ui->l_y_->value());
     });
     update();

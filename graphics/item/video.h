@@ -18,14 +18,14 @@
 #ifndef VIDEO_H
 #define VIDEO_H
 
-#include "igraphicsitem.h"
+#include "graphicsitem.h"
 
 #include <QGraphicsVideoItem>
 
 class QMediaPlayer;
 class VideoMenu;
 
-class Video : public QGraphicsVideoItem, public IGraphicsItem
+class Video : public GraphicsItem<QGraphicsVideoItem>
 {
 public:
     Video(QGraphicsItem *parent = 0);
@@ -43,12 +43,6 @@ public:
 
 protected:
     virtual void contextMenuEvent(QGraphicsSceneContextMenuEvent *event) override;
-    virtual bool sceneEventFilter(QGraphicsItem *watched, QEvent *event) override;
-    virtual void hoverEnterEvent(QGraphicsSceneHoverEvent *event) override;
-    virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent *event) override;
-    virtual void mouseMoveEvent(QGraphicsSceneMouseEvent * event) override;
-    virtual void wheelEvent(QGraphicsSceneWheelEvent *event) override;
-    virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
 
 private:
     QMediaPlayer *player_;

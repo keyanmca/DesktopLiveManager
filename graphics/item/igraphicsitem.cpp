@@ -30,7 +30,7 @@ CornerGrabber* IGraphicsItem::container_ = 0;
 IGraphicsItem::IGraphicsItem(QGraphicsItem *item, QObject *parent) :
     QObject(parent),
     item_(item),
-    position_(GraphicsItem::CENTER),
+    position_(IGraphicsItem::CENTER),
     moving_(false),
     hovered_(false)
 {
@@ -60,37 +60,37 @@ QGraphicsItem *IGraphicsItem::item()
     return item_;
 }
 
-void IGraphicsItem::setPosition(GraphicsItem::Position pos)
+void IGraphicsItem::setPosition(IGraphicsItem::Position pos)
 {
     position_ = pos;
     updatePos();
 }
 
-GraphicsItem::Position IGraphicsItem::position() const
+IGraphicsItem::Position IGraphicsItem::position() const
 {
     return position_;
 }
 
 void IGraphicsItem::updatePos()
 {
-    if(position_ != GraphicsItem::MANUAL) {
+    if(position_ != IGraphicsItem::MANUAL) {
         QRectF s_rect = item_->scene()->sceneRect();
         QRectF b_rect = QRectF(QPointF(0, 0), size());
         QPointF new_pos;
         switch(position_) {
-        case GraphicsItem::CENTER:
+        case IGraphicsItem::CENTER:
             new_pos = QPointF((s_rect.width() - b_rect.width()) / 2, (s_rect.height() - b_rect.height()) / 2);
             break;
-        case GraphicsItem::TOP_LEFT:
+        case IGraphicsItem::TOP_LEFT:
             new_pos = QPointF(0, 0);
             break;
-        case GraphicsItem::TOP_RIGHT:
+        case IGraphicsItem::TOP_RIGHT:
             new_pos = QPointF(s_rect.width() - b_rect.width() ,0);
             break;
-        case GraphicsItem::BOTTOM_LEFT:
+        case IGraphicsItem::BOTTOM_LEFT:
             new_pos = QPointF(0, s_rect.height() - b_rect.height());
             break;
-        case GraphicsItem::BOTTOM_RIGHT:
+        case IGraphicsItem::BOTTOM_RIGHT:
             new_pos = QPointF(s_rect.width() - b_rect.width(), s_rect.height() - b_rect.height());
             break;
         default:
@@ -316,15 +316,15 @@ CommonMenu::CommonMenu(QObject *parent) :
 
     QMenu *pos = new QMenu("Position", menu_);
     connect(pos->addAction("Center"), &QAction::triggered,
-            [&]() { if(item_) { item_->setPosition(GraphicsItem::CENTER); } });
+            [&]() { if(item_) { item_->setPosition(IGraphicsItem::CENTER); } });
     connect(pos->addAction("TopLeft"), &QAction::triggered,
-            [&]() { if(item_) { item_->setPosition(GraphicsItem::TOP_LEFT); } });
+            [&]() { if(item_) { item_->setPosition(IGraphicsItem::TOP_LEFT); } });
     connect(pos->addAction("TopRight"), &QAction::triggered,
-            [&]() { if(item_) { item_->setPosition(GraphicsItem::TOP_RIGHT); } });
+            [&]() { if(item_) { item_->setPosition(IGraphicsItem::TOP_RIGHT); } });
     connect(pos->addAction("BottomLeft"), &QAction::triggered,
-            [&]() { if(item_) { item_->setPosition(GraphicsItem::BOTTOM_LEFT); } });
+            [&]() { if(item_) { item_->setPosition(IGraphicsItem::BOTTOM_LEFT); } });
     connect(pos->addAction("BottomRight"), &QAction::triggered,
-            [&]() { if(item_) { item_->setPosition(GraphicsItem::BOTTOM_RIGHT); } });
+            [&]() { if(item_) { item_->setPosition(IGraphicsItem::BOTTOM_RIGHT); } });
     menu_->addMenu(pos);
 
     connect(menu_->addAction("Default Size"), &QAction::triggered,

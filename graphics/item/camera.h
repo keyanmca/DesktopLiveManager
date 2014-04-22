@@ -18,7 +18,7 @@
 #ifndef CAMERA_H
 #define CAMERA_H
 
-#include "igraphicsitem.h"
+#include "graphicsitem.h"
 
 #include <QList>
 #include <QByteArray>
@@ -27,7 +27,7 @@
 class QCamera;
 class CameraMenu;
 
-class Camera : public QGraphicsVideoItem, public IGraphicsItem
+class Camera : public GraphicsItem<QGraphicsVideoItem>
 {
 public:
     Camera(QGraphicsItem *parent = 0);
@@ -45,12 +45,6 @@ public:
 
 protected:
     virtual void contextMenuEvent(QGraphicsSceneContextMenuEvent *event) override;
-    virtual bool sceneEventFilter(QGraphicsItem *watched, QEvent *event) override;
-    virtual void hoverEnterEvent(QGraphicsSceneHoverEvent *event) override;
-    virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent *event) override;
-    virtual void mouseMoveEvent(QGraphicsSceneMouseEvent * event) override;
-    virtual void wheelEvent(QGraphicsSceneWheelEvent *event) override;
-    virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
 
 private:
     QCamera *camera_;

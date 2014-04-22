@@ -75,7 +75,7 @@ void PropertyController::setItem(QGraphicsItem *item)
     }
 
     switch(item->type()) {
-    case GraphicsItem::SCREEN_CAPTURE:
+    case IGraphicsItem::SCREEN_CAPTURE:
         ScreenCapture *sc;
         if((sc = dynamic_cast<ScreenCapture*>(item))) {
             if(!p_sc_) {
@@ -86,7 +86,7 @@ void PropertyController::setItem(QGraphicsItem *item)
             current_ = p_sc_;
         }
         break;
-    case GraphicsItem::PICTURE:
+    case IGraphicsItem::PICTURE:
         Picture *pic;
         if((pic = dynamic_cast<Picture*>(item))) {
             if(!p_picture_) {
@@ -97,7 +97,7 @@ void PropertyController::setItem(QGraphicsItem *item)
             current_ = p_picture_;
         }
         break;
-    case GraphicsItem::VIDEO:
+    case IGraphicsItem::VIDEO:
         Video *video;
         if((video = dynamic_cast<Video*>(item))) {
             if(!p_video_) {
@@ -108,7 +108,7 @@ void PropertyController::setItem(QGraphicsItem *item)
             current_ = p_video_;
         }
         break;
-    case GraphicsItem::CAMERA:
+    case IGraphicsItem::CAMERA:
         Camera *camera;
         if((camera = dynamic_cast<Camera*>(item))) {
             if(!p_camera_) {
@@ -119,7 +119,7 @@ void PropertyController::setItem(QGraphicsItem *item)
             current_ = p_camera_;
         }
         break;
-    case GraphicsItem::TEXT:
+    case IGraphicsItem::TEXT:
         Text *text;
         if((text = dynamic_cast<Text*>(item))) {
             if(!p_text_) {

@@ -24,30 +24,6 @@
 
 class QMenu;
 
-namespace GraphicsItem
-{
-
-enum Type
-{
-    SCREEN_CAPTURE = QGraphicsItem::UserType + 1,
-    PICTURE,
-    VIDEO,
-    CAMERA,
-    TEXT
-};
-
-enum Position
-{
-    MANUAL = 0,
-    CENTER,
-    TOP_LEFT,
-    TOP_RIGHT,
-    BOTTOM_LEFT,
-    BOTTOM_RIGHT
-};
-
-} // namespace GraphicsItem
-
 class CornerGrabber : public QGraphicsRectItem
 {
 public:
@@ -69,14 +45,33 @@ class IGraphicsItem : public QObject
 {
      Q_OBJECT
 public:
+    enum Type
+    {
+        SCREEN_CAPTURE = QGraphicsItem::UserType + 1,
+        PICTURE,
+        VIDEO,
+        CAMERA,
+        TEXT
+    };
+
+    enum Position
+    {
+        MANUAL = 0,
+        CENTER,
+        TOP_LEFT,
+        TOP_RIGHT,
+        BOTTOM_LEFT,
+        BOTTOM_RIGHT
+    };
+
     virtual ~IGraphicsItem();
     QGraphicsItem* item();
     virtual void update() {}
     virtual QMenu* menu() { return 0; }
 
     // position
-    void setPosition(GraphicsItem::Position pos);
-    GraphicsItem::Position position() const;
+    void setPosition(IGraphicsItem::Position pos);
+    IGraphicsItem::Position position() const;
     void updatePos(); // updatePos emits itemChanged to update property
 
     // size
@@ -105,7 +100,7 @@ protected:
 private:
     QGraphicsItem *item_; // doesn't have ownership
 
-    GraphicsItem::Position position_;
+    IGraphicsItem::Position position_;
 
     // for grabbers
     void setupGrabbers();

@@ -44,7 +44,7 @@ void Picture::update()
 
 int Picture::type() const
 {
-    return GraphicsItem::PICTURE;
+    return IGraphicsItem::PICTURE;
 }
 
 void Picture::advance(int phase)

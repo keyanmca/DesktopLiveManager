@@ -18,13 +18,13 @@
 #ifndef TEXT_H
 #define TEXT_H
 
-#include "igraphicsitem.h"
+#include "graphicsitem.h"
 
 #include <QGraphicsTextItem>
 
 class TextMenu;
 
-class Text : public QGraphicsTextItem, public IGraphicsItem
+class Text : public GraphicsItem<QGraphicsTextItem>
 {
 public:
     Text(QGraphicsItem *parent = 0);
@@ -35,9 +35,6 @@ public:
 
 protected:
     void contextMenuEvent(QGraphicsSceneContextMenuEvent *event) override;
-    void mouseMoveEvent(QGraphicsSceneMouseEvent *event) override;
-    void wheelEvent(QGraphicsSceneWheelEvent *event) override;
-    QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
 
 private:
     static TextMenu *menu_;

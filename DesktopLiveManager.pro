@@ -19,76 +19,77 @@ linux {
 }
 
 HEADERS += \
+    core/audiocontroller.h \
     core/mainwindow.h \
+    core/mediaprocessor.h \
     core/streamcontroller.h \
-    util/flvstreamer.h \
+    external/audioencoder.h \
+    external/rtmpstreamer.h \
+    external/videoencoder.h \
     graphics/graphicscontroller.h \
     graphics/graphicsscene.h \
-    graphics/itemmodel.h \
-    graphics/itemview.h \
-    external/rtmpstreamer.h \
+    graphics/item/camera.h \
+    graphics/item/graphicsitem.h \
     graphics/item/igraphicsitem.h \
     graphics/item/picture.h \
     graphics/item/pixmap.h \
-    graphics/item/screenareaselector.h \
     graphics/item/screencapture.h \
     graphics/item/text.h \
+    graphics/item/video.h \
+    graphics/itemmodel.h \
+    graphics/itemview.h \
+    graphics/property/cameraproperty.h \
+    graphics/property/pictureproperty.h \
     graphics/property/propertybase.h \
     graphics/property/propertycontroller.h \
     graphics/property/screencaptureproperty.h \
-    graphics/property/pictureproperty.h \
-    graphics/item/video.h \
     graphics/property/textproperty.h \
-    core/audiocontroller.h \
-    external/videoencoder.h \
-    external/audioencoder.h \
     graphics/property/videoproperty.h \
-    core/mediaprocessor.h \
+    util/flvstreamer.h \
     util/mousecursor.h \
-    graphics/item/camera.h \
-    graphics/property/cameraproperty.h
+    util/screenareaselector.h
 
 SOURCES += \
+    core/audiocontroller.cpp \
     core/main.cpp \
     core/mainwindow.cpp \
+    core/mediaprocessor.cpp \
     core/streamcontroller.cpp \
-    util/flvstreamer.cpp \
+    external/audioencoder.cpp \
+    external/rtmpstreamer.cpp \
+    external/videoencoder.cpp \
     graphics/graphicscontroller.cpp \
     graphics/graphicsscene.cpp \
-    graphics/itemmodel.cpp \
-    graphics/itemview.cpp \
-    external/rtmpstreamer.cpp \
+    graphics/item/camera.cpp \
     graphics/item/igraphicsitem.cpp \
     graphics/item/picture.cpp \
     graphics/item/pixmap.cpp \
-    graphics/item/screenareaselector.cpp \
     graphics/item/screencapture.cpp \
     graphics/item/text.cpp \
+    graphics/item/video.cpp \
+    graphics/itemmodel.cpp \
+    graphics/itemview.cpp \
+    graphics/property/cameraproperty.cpp \
+    graphics/property/pictureproperty.cpp \
     graphics/property/propertybase.cpp \
     graphics/property/propertycontroller.cpp \
     graphics/property/screencaptureproperty.cpp \
-    graphics/property/pictureproperty.cpp \
-    graphics/item/video.cpp \
     graphics/property/textproperty.cpp \
-    core/audiocontroller.cpp \
-    external/videoencoder.cpp \
-    external/audioencoder.cpp \
     graphics/property/videoproperty.cpp \
-    core/mediaprocessor.cpp \
+    util/flvstreamer.cpp \
     util/mousecursor.cpp \
-    graphics/item/camera.cpp \
-    graphics/property/cameraproperty.cpp
+    util/screenareaselector.cpp
 
 FORMS    += \
-    core/mainwindow.ui \
-    graphics/property/propertybase.ui \
-    core/general.ui \
     core/encoder.ui \
-    graphics/property/videoproperty.ui \
-    graphics/property/pictureproperty.ui \
-    graphics/property/textproperty.ui \
+    core/general.ui \
+    core/mainwindow.ui \
     core/view.ui \
-    graphics/property/cameraproperty.ui
+    graphics/property/cameraproperty.ui \
+    graphics/property/pictureproperty.ui \
+    graphics/property/propertybase.ui \
+    graphics/property/textproperty.ui \
+    graphics/property/videoproperty.ui
 
 RESOURCES += \
     resource.qrc

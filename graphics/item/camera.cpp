@@ -25,8 +25,7 @@
 CameraMenu* Camera::menu_ = 0;
 
 Camera::Camera(QGraphicsItem *parent) :
-    QGraphicsVideoItem(parent),
-    IGraphicsItem(this),
+    GraphicsItem(parent),
     camera_(0)
 {
     setAcceptHoverEvents(true);
@@ -75,43 +74,9 @@ void Camera::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)
     menu_->menu()->exec(event->screenPos());
 }
 
-bool Camera::sceneEventFilter(QGraphicsItem *watched, QEvent *event)
-{
-    return onSceneEventFilter(watched, event);
-}
-
-void Camera::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
-{
-    onHoverEnterEvent(event);
-}
-
-void Camera::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
-{
-    onHoverLeaveEvent(event);
-}
-
-void Camera::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
-{
-    if(position() != GraphicsItem::MANUAL) {
-        setPosition(GraphicsItem::MANUAL);
-    }
-    QGraphicsItem::mouseMoveEvent(event);
-}
-
-void Camera::wheelEvent(QGraphicsSceneWheelEvent *event)
-{
-    onWheelEvent(event);
-}
-
-QVariant Camera::itemChange(QGraphicsItem::GraphicsItemChange change, const QVariant &value)
-{
-    onItemChange(change, value);
-    return QGraphicsVideoItem::itemChange(change, value);
-}
-
 int Camera::type() const
 {
-    return GraphicsItem::CAMERA;
+    return IGraphicsItem::CAMERA;
 }
 
 void Camera::setDevice(const QByteArray &device)

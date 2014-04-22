@@ -17,12 +17,8 @@
 
 #include "pixmap.h"
 
-#include <QGraphicsSceneWheelEvent>
-#include <QDebug>
-
 Pixmap::Pixmap(QGraphicsItem *parent) :
-    QGraphicsPixmapItem(parent),
-    IGraphicsItem(this),
+    GraphicsItem(parent),
     mode_(Qt::KeepAspectRatio)
 {
     setAcceptHoverEvents(true);
@@ -67,36 +63,3 @@ QSize Pixmap::size() const
     return size_;
 }
 
-bool Pixmap::sceneEventFilter(QGraphicsItem *watched, QEvent *event)
-{
-    return onSceneEventFilter(watched, event);
-}
-
-void Pixmap::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
-{
-    onHoverEnterEvent(event);
-}
-
-void Pixmap::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
-{
-    onHoverLeaveEvent(event);
-}
-
-void Pixmap::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
-{
-    if(position() != GraphicsItem::MANUAL) {
-        setPosition(GraphicsItem::MANUAL);
-    }
-    QGraphicsItem::mouseMoveEvent(event);
-}
-
-void Pixmap::wheelEvent(QGraphicsSceneWheelEvent *event)
-{
-    onWheelEvent(event);
-}
-
-QVariant Pixmap::itemChange(QGraphicsItem::GraphicsItemChange change, const QVariant &value)
-{
-    onItemChange(change, value);
-    return QGraphicsPixmapItem::itemChange(change, value);
-}

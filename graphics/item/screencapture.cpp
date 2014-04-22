@@ -16,7 +16,7 @@
  */
 
 #include "screencapture.h"
-#include "screenareaselector.h"
+#include "util/screenareaselector.h"
 #include "util/mousecursor.h"
 
 #include <QApplication>
@@ -71,7 +71,7 @@ ScreenCapture::~ScreenCapture()
 
 int ScreenCapture::type() const
 {
-    return GraphicsItem::SCREEN_CAPTURE;
+    return IGraphicsItem::SCREEN_CAPTURE;
 }
 
 void ScreenCapture::advance(int phase)
@@ -146,7 +146,7 @@ void ScreenCapture::fillByScaling()
     setCapturedArea(c_new_rect);
 
     setSize(s_rect.size().toSize());
-    setPosition(GraphicsItem::CENTER);
+    setPosition(IGraphicsItem::CENTER);
 }
 
 void ScreenCapture::fillByExpandingCaptureArea()
@@ -163,7 +163,7 @@ void ScreenCapture::fillByExpandingCaptureArea()
     setCapturedArea(QRect(int(x + 0.5), int(y + 0.5), int(w + 0.5), int(h + 0.5)));
 
     setSize(s_rect.size().toSize());
-    setPosition(GraphicsItem::CENTER);
+    setPosition(IGraphicsItem::CENTER);
 }
 
 void ScreenCapture::fitByScaling()
@@ -172,7 +172,7 @@ void ScreenCapture::fitByScaling()
     QSizeF old = size();
 
     setSize(old.scaled(s_rect.size(), Qt::KeepAspectRatio).toSize());
-    setPosition(GraphicsItem::CENTER);
+    setPosition(IGraphicsItem::CENTER);
 }
 
 void ScreenCapture::fullScreen()

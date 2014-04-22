@@ -25,8 +25,7 @@
 VideoMenu* Video::menu_ = 0;
 
 Video::Video(QGraphicsItem *parent) :
-    QGraphicsVideoItem(parent),
-    IGraphicsItem(this),
+    GraphicsItem(parent),
     player_(0)
 {
     setAcceptHoverEvents(true);
@@ -51,7 +50,7 @@ Video::~Video()
 
 int Video::type() const
 {
-    return GraphicsItem::VIDEO;
+    return IGraphicsItem::VIDEO;
 }
 
 QSize Video::nativeSize() const
@@ -96,40 +95,6 @@ void Video::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)
 {
     menu_->setItem(this);
     menu_->menu()->exec(event->screenPos());
-}
-
-bool Video::sceneEventFilter(QGraphicsItem *watched, QEvent *event)
-{
-    return onSceneEventFilter(watched, event);
-}
-
-void Video::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
-{
-    onHoverEnterEvent(event);
-}
-
-void Video::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
-{
-    onHoverLeaveEvent(event);
-}
-
-void Video::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
-{
-    if(position() != GraphicsItem::MANUAL) {
-        setPosition(GraphicsItem::MANUAL);
-    }
-    QGraphicsItem::mouseMoveEvent(event);
-}
-
-void Video::wheelEvent(QGraphicsSceneWheelEvent *event)
-{
-    onWheelEvent(event);
-}
-
-QVariant Video::itemChange(QGraphicsItem::GraphicsItemChange change, const QVariant &value)
-{
-    onItemChange(change, value);
-    return QGraphicsVideoItem::itemChange(change, value);
 }
 
 

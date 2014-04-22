@@ -24,10 +24,10 @@
 TextMenu* Text::menu_ = 0;
 
 Text::Text(QGraphicsItem *parent) :
-    QGraphicsTextItem(parent),
-    IGraphicsItem(this)
+    GraphicsItem(parent)
 {
-    setHtml("<h1> hello world </h1>");
+    setAcceptHoverEvents(false);
+    setHtml("<h1> Text </h1>");
 
     if(!menu_) { // init static member
         menu_ = new TextMenu;
@@ -36,7 +36,7 @@ Text::Text(QGraphicsItem *parent) :
 
 int Text::type() const
 {
-    return GraphicsItem::TEXT;
+    return IGraphicsItem::TEXT;
 }
 
 void Text::setSize(const QSize &size)
@@ -60,25 +60,6 @@ void Text::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)
 {
     menu_->setItem(this);
     menu_->menu()->exec(event->screenPos());
-}
-
-void Text::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
-{
-    if(position() != GraphicsItem::MANUAL) {
-        setPosition(GraphicsItem::MANUAL);
-    }
-    QGraphicsItem::mouseMoveEvent(event);
-}
-
-void Text::wheelEvent(QGraphicsSceneWheelEvent *event)
-{
-    onWheelEvent(event);
-}
-
-QVariant Text::itemChange(QGraphicsItem::GraphicsItemChange change, const QVariant &value)
-{
-    onItemChange(change, value);
-    return QGraphicsTextItem::itemChange(change, value);
 }
 
 
