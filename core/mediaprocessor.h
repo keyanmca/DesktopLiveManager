@@ -47,8 +47,10 @@ public:
     void setupAudioEncoder(int samplerate, int bitrate_kbps);
     void setupVideoEncoder(QSize image_size, int framerate, int bitrate_kbps, int preset_index);
 
-public slots:
     void start();
+    bool isActive() const;
+
+public slots:
     void stop();
     /* sample size is always 16 bit signed integer and pcm_data is interleaved */
     void processAudioData(int timestamp_ms, QByteArray pcm_data);

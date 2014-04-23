@@ -117,6 +117,11 @@ void MediaProcessor::start()
     }
 }
 
+bool MediaProcessor::isActive() const
+{
+    return is_active_;
+}
+
 void MediaProcessor::stop()
 {
     if(!is_active_) return;

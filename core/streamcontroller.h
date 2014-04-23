@@ -54,6 +54,7 @@ public:
 signals:
     void requestProcessVideoData(int timestamp_ms, QImage data);
     void requestProcessAudioData(int timestamp_ms, QByteArray pcm_data);
+    void requestStop();
 
 private slots:
     void process();

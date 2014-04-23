@@ -97,6 +97,10 @@ StreamController::StreamController(GraphicsController *graphics, AudioController
             processor_, SLOT(processAudioData(int,QByteArray)));
     connect(this, SIGNAL(requestProcessVideoData(int,QImage)),
             processor_, SLOT(processVideoData(int,QImage)));
+    connect(this, SIGNAL(requestStop()),
+            processor_, SLOT(stop()));
+    processor_->moveToThread(&media_process_thread_);
+    media_process_thread_.start(QThread::HighPriority);
 
     // misc
     connect(&update_timer_, SIGNAL(timeout()), this, SLOT(process()));
@@ -110,6 +114,10 @@ StreamController::StreamController(GraphicsController *graphics, AudioController
 
 StreamController::~StreamController()
 {
+    media_process_thread_.quit();
+    media_process_thread_.wait();
+
+    delete processor_;
     delete general_ui;
     delete encoder_ui;
 }
@@ -118,6 +126,13 @@ bool StreamController::start()
 {
     if(is_active_) return false;
     is_active_ = true;
+
+    // wait upto 100ms for media processor to finish if active
+    for(int i = 0; i < 10; ++i) {
+        if(!processor_->isActive()) break;
+        QThread::msleep(10);
+    }
+    if(processor_->isActive()) return false;
 
     // setup media processor
     processor_->setupAudioEncoder(44100, encoder_ui->a_bitrate_->value());
@@ -142,8 +157,6 @@ bool StreamController::start()
     }
 
     processor_->start();
-    processor_->moveToThread(&media_process_thread_);
-    media_process_thread_.start(QThread::HighPriority);
 
     // start audioinput device
     audio_->setSampleRate(44100);
@@ -159,12 +172,9 @@ void StreamController::stop()
     if(!is_active_) return;
     is_active_ = false;
 
-    media_process_thread_.quit();
-    media_process_thread_.wait();
-    processor_->stop();
-    //processor_->moveToThread(QThread::currentThread());
-
     audio_->stop();
+
+    emit requestStop();
 }
 
 bool StreamController::isActive()
