@@ -31,7 +31,8 @@ MediaProcessor::MediaProcessor(QObject *parent) :
     flv_formatter_(new FLVFormatter),
     rtmp_streamer_(0),
     dest_file_(0),
-    is_active_(false)
+    is_active_(false),
+    last_timestamp_(0)
 {
 }
 
@@ -92,6 +93,7 @@ void MediaProcessor::start()
 {
     if(is_active_) return;
     is_active_ = true;
+    last_timestamp_ = 0;
 
     if(rtmp_url_ != QString()) {
         rtmp_streamer_ = new RTMPStreamer();
@@ -120,6 +122,11 @@ void MediaProcessor::start()
 bool MediaProcessor::isActive() const
 {
     return is_active_;
+}
+
+int MediaProcessor::lastTimestamp() const
+{
+    return last_timestamp_;
 }
 
 void MediaProcessor::stop()
@@ -167,6 +174,7 @@ void MediaProcessor::processVideoData(int timestamp_ms, QImage data)
     }
 
     output(flv_formatter_->data(), flv_formatter_->size());
+    last_timestamp_ = timestamp_ms;
 }
 
 void MediaProcessor::output(char *data, int size)

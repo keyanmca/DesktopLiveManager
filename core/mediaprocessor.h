@@ -49,6 +49,7 @@ public:
 
     void start();
     bool isActive() const;
+    int lastTimestamp() const;
 
 public slots:
     void stop();
@@ -70,6 +71,7 @@ private:
     QString file_url_;
 
     bool is_active_;
+    int last_timestamp_;
 };
 
 #endif // MEDIAPROCESSOR_H

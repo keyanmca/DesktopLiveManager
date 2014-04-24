@@ -29,7 +29,7 @@
 #include <QDir>
 #include <QDebug>
 
-const int kResolution_16_9_Num = 7;
+const int kResolution_16_9_Num = 9;
 const QSize kResolution_16_9[kResolution_16_9_Num] = {
     QSize(704, 396),
     QSize(768, 432),
@@ -37,10 +37,12 @@ const QSize kResolution_16_9[kResolution_16_9_Num] = {
     QSize(896, 504),
     QSize(960, 540),
     QSize(1024, 576),
+    QSize(1280, 720),
+    QSize(1600, 900),
     QSize(1920, 1080)
 };
 
-const int kResolution_4_3_Num = 6;
+const int kResolution_4_3_Num = 7;
 const QSize kResolution_4_3[kResolution_4_3_Num] = {
     QSize(704, 528),
     QSize(768, 576),
@@ -48,6 +50,7 @@ const QSize kResolution_4_3[kResolution_4_3_Num] = {
     QSize(896, 672),
     QSize(960, 720),
     QSize(1024, 768),
+    QSize(1280, 960)
 };
 
 StreamController::StreamController(GraphicsController *graphics, AudioController *audio,
@@ -64,9 +67,10 @@ StreamController::StreamController(GraphicsController *graphics, AudioController
     processor_(new MediaProcessor),
     /* misc */
     is_active_(0),
+    target_frame_period_(0),
+    frame_period_(0),
     image_size_(QSize(0, 0)),
-    rendered_(QImage(image_size_, QImage::Format_RGB888)),
-    audio_timestamp_(0)
+    rendered_(QImage(image_size_, QImage::Format_RGB888))
 {
     // init ui
     general_ui->setupUi(general_tab_);
@@ -74,7 +78,7 @@ StreamController::StreamController(GraphicsController *graphics, AudioController
 
     encoder_ui->setupUi(encoder_tab_);
     connect(encoder_ui->v_size_, SIGNAL(currentIndexChanged(int)), this, SLOT(onSizeChanged()));
-    connect(encoder_ui->v_framerate_, SIGNAL(valueChanged(int)), this, SLOT(onFPSChanged()));
+    connect(encoder_ui->v_framerate_, SIGNAL(valueChanged(int)), this, SLOT(setFramerate(int)));
     for(int i = 0; i < kResolution_16_9_Num; ++i) {
         const QSize &size = kResolution_16_9[i];
         QString resolution =
@@ -105,7 +109,7 @@ StreamController::StreamController(GraphicsController *graphics, AudioController
     // misc
     connect(&update_timer_, SIGNAL(timeout()), this, SLOT(process()));
 
-    setFPS(encoder_ui->v_framerate_->value());
+    setFramerate(encoder_ui->v_framerate_->value());
     general_ui->save_to_file_->setChecked(true);
     general_ui->dest_file_->setText(QDir::homePath() + "/live.flv");
     encoder_ui->v_size_->setCurrentIndex(0);
@@ -114,6 +118,7 @@ StreamController::StreamController(GraphicsController *graphics, AudioController
 
 StreamController::~StreamController()
 {
+    stop();
     media_process_thread_.quit();
     media_process_thread_.wait();
 
@@ -173,8 +178,8 @@ void StreamController::stop()
     is_active_ = false;
 
     audio_->stop();
-
     emit requestStop();
+    setFramePeriod(target_frame_period_);
 }
 
 bool StreamController::isActive()
@@ -187,34 +192,34 @@ int StreamController::elapsed()
     return time_.elapsed();
 }
 
-void StreamController::setSize(const QSize &size)
-{
-    if(is_active_) return;
-    image_size_ = size;
-    rendered_ = QImage(image_size_, QImage::Format_RGB888);
-    graphics_->setSize(image_size_);
-}
-
-void StreamController::setFPS(int fps)
-{
-    if(is_active_) return;
-
-    update_timer_.stop();
-    update_timer_.start(1000 / fps);
-}
-
 void StreamController::process()
 {
     graphics_->update();
     if(!is_active_) return;
 
-    int ts = time_.elapsed();
-
     QPainter p(&rendered_);
     graphics_->render(&p);
-    emit requestProcessVideoData(ts, rendered_);
+    emit requestProcessVideoData(time_.elapsed(), rendered_);
 
-    emit requestProcessAudioData(ts, audio_->data());
+    emit requestProcessAudioData(time_.elapsed(), audio_->data());
+
+    // framerate control
+    int since_last_frame = time_.elapsed() - processor_->lastTimestamp();
+    qDebug() << frame_period_ << target_frame_period_ << since_last_frame;
+    if(since_last_frame < frame_period_ * 2) {
+        // do nothing
+        if(frame_period_ == target_frame_period_) {
+            qDebug() << "ok";
+        } else {
+            int period = frame_period_ - (frame_period_ >> 3);
+            setFramePeriod(period > target_frame_period_ ?
+                               period : target_frame_period_);
+            qDebug() << "decrease period";
+        }
+    } else {
+        setFramePeriod(frame_period_ + (frame_period_ >> 2));
+            qDebug() << "increase period";
+    }
 }
 
 void StreamController::onOpenSaveFile()
@@ -238,7 +243,24 @@ void StreamController::onSizeChanged()
     }
 }
 
-void StreamController::onFPSChanged()
+void StreamController::setFramerate(int framerate)
 {
-    setFPS(encoder_ui->v_framerate_->value());
+    if(is_active_) return;
+    target_frame_period_ = 1000 / framerate;
+    setFramePeriod(target_frame_period_);
+}
+
+void StreamController::setSize(const QSize &size)
+{
+    if(is_active_) return;
+    image_size_ = size;
+    rendered_ = QImage(image_size_, QImage::Format_RGB888);
+    graphics_->setSize(image_size_);
+}
+
+void StreamController::setFramePeriod(int period)
+{
+    frame_period_ = period;
+    update_timer_.stop();
+    update_timer_.start(period);
 }

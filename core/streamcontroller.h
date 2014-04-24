@@ -48,9 +48,6 @@ public:
     bool isActive();
     int elapsed();
 
-    // video encoder
-    void setSize(const QSize &size);
-    void setFPS(int fps);
 signals:
     void requestProcessVideoData(int timestamp_ms, QImage data);
     void requestProcessAudioData(int timestamp_ms, QByteArray pcm_data);
@@ -62,9 +59,13 @@ private slots:
 
     // video encoder
     void onSizeChanged();
-    void onFPSChanged();
+    void setFramerate(int framerate);
 
 private:
+    // video encoder
+    void setSize(const QSize &size);
+    void setFramePeriod(int period);
+
     QWidget *general_tab_; // no ownership
     QWidget *encoder_tab_; // no ownership
 
@@ -77,13 +78,13 @@ private:
     QThread media_process_thread_;
 
     bool is_active_;
+    int target_frame_period_;
+    int frame_period_;
     QTimer update_timer_;
     QTime time_;
 
     QSize image_size_;
     QImage rendered_;
-
-    int audio_timestamp_;
 };
 
 #endif // STREAMCONTROLLER_H
