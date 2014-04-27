@@ -26,7 +26,7 @@ class QRect;
 class QDragMoveEvent;
 class ScreenAreaSelector;
 class ScreenCaptureMenu;
-class CaptureAndScale;
+class ScreenGrab;
 class MouseCursor;
 
 class ScreenCapture : public Pixmap
@@ -64,33 +64,13 @@ protected:
 
 private:
     QThread thread_;
-    CaptureAndScale *capture_;
+    ScreenGrab *screen_grab_;
     QScreen *screen_; // take ownership ?
     QPoint topleft_;
     Qt::TransformationMode mode_;
     ScreenAreaSelector *area_selector_;
     bool include_cursor_;
     static ScreenCaptureMenu *menu_;
-};
-
-
-class CaptureAndScale : public QObject
-{
-    Q_OBJECT
-public:
-    CaptureAndScale();
-    ~CaptureAndScale();
-
-public slots:
-    void capture(QScreen *screen,
-                 QRect capture_area, QSize target_size, bool include_cursor,
-                 Qt::AspectRatioMode AR_mode, Qt::TransformationMode TF_mode);
-
-signals:
-    void pixmapReady(QPixmap pixmap);
-
-private:
-    MouseCursor *cursor_;
 };
 
 

@@ -16,11 +16,10 @@
  */
 
 #include "screencapture.h"
+#include "util/screengrab.h"
 #include "util/screenareaselector.h"
-#include "util/mousecursor.h"
 
 #include <QApplication>
-#include <QMetaType>
 #include <QScreen>
 #include <QMenu>
 #include <QWidget>
@@ -28,12 +27,13 @@
 #include <QGraphicsScene>
 #include <QGraphicsSceneEvent>
 #include <QDebug>
+#include <QTime>
 
 ScreenCaptureMenu* ScreenCapture::menu_ = 0;
 
 ScreenCapture::ScreenCapture(const QRect &area, QGraphicsItem* parent) :
     Pixmap(parent),
-    capture_(new CaptureAndScale),
+    screen_grab_(new ScreenGrab),
     screen_(QApplication::primaryScreen()),
     topleft_(area.topLeft()),
     mode_(Qt::FastTransformation),
@@ -47,13 +47,13 @@ ScreenCapture::ScreenCapture(const QRect &area, QGraphicsItem* parent) :
     connect(this, SIGNAL(requestPixmap(
                              QScreen*,QRect,QSize,bool,
                              Qt::AspectRatioMode,Qt::TransformationMode)),
-            capture_, SLOT(capture(
+            screen_grab_, SLOT(capture(
                                QScreen*,QRect,QSize,bool,
                                Qt::AspectRatioMode,Qt::TransformationMode)));
-    connect(capture_, SIGNAL(pixmapReady(QPixmap)),
+    connect(screen_grab_, SIGNAL(pixmapReady(QPixmap)),
             this, SLOT(onPixmapReady(QPixmap)));
 
-    capture_->moveToThread(&thread_);
+    screen_grab_->moveToThread(&thread_);
     thread_.start(QThread::HighPriority);
 
     if(!menu_) { // init static member
@@ -65,7 +65,7 @@ ScreenCapture::~ScreenCapture()
 {
     thread_.quit();
     thread_.wait();
-    delete capture_;
+    delete screen_grab_;
     delete area_selector_;
 }
 
@@ -200,46 +200,6 @@ void ScreenCapture::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)
 {
     menu_->setItem(this);
     menu_->menu()->exec(event->screenPos());
-}
-
-
-// CaptureAndScale class
- Q_DECLARE_METATYPE(Qt::AspectRatioMode)
- Q_DECLARE_METATYPE(Qt::TransformationMode)
-
-CaptureAndScale::CaptureAndScale() :
-    cursor_(0)
-{
-    qRegisterMetaType<Qt::AspectRatioMode>();
-    qRegisterMetaType<Qt::TransformationMode>();
-    cursor_ = new MouseCursor;
-}
-
-CaptureAndScale::~CaptureAndScale()
-{
-    delete cursor_;
-}
-
-void CaptureAndScale::capture(
-        QScreen *screen,
-        QRect capture_area, QSize target_size, bool include_cursor,
-        Qt::AspectRatioMode AR_mode, Qt::TransformationMode TF_mode)
-{
-    QPixmap pixmap = screen->grabWindow(
-                0, capture_area.x(), capture_area.y(),
-                capture_area.width(), capture_area.height());
-
-    if(include_cursor) {
-        QPainter p(&pixmap);
-        cursor_->update();
-        p.drawImage(cursor_->pos() - capture_area.topLeft(), cursor_->image());
-    }
-
-    if(target_size == capture_area.size()) {
-        emit pixmapReady(pixmap);
-    } else {
-        emit pixmapReady(pixmap.scaled(target_size, AR_mode, TF_mode));
-    }
 }
 
 

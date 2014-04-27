@@ -15,7 +15,7 @@ LIBS += -lx264 -lmp3lame -lrtmp
 
 linux {
     QT += x11extras
-    LIBS += -lXfixes
+    LIBS += -lXfixes -lX11 -lXext
 }
 
 HEADERS += \
@@ -47,7 +47,8 @@ HEADERS += \
     graphics/property/videoproperty.h \
     util/flvstreamer.h \
     util/mousecursor.h \
-    util/screenareaselector.h
+    util/screenareaselector.h \
+    util/screengrab.h
 
 SOURCES += \
     core/audiocontroller.cpp \
@@ -78,7 +79,8 @@ SOURCES += \
     graphics/property/videoproperty.cpp \
     util/flvstreamer.cpp \
     util/mousecursor.cpp \
-    util/screenareaselector.cpp
+    util/screenareaselector.cpp \
+    util/screengrab.cpp
 
 FORMS    += \
     core/encoder.ui \
