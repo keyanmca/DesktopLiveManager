@@ -90,6 +90,7 @@ FORMS    += \
     graphics/property/cameraproperty.ui \
     graphics/property/pictureproperty.ui \
     graphics/property/propertybase.ui \
+    graphics/property/screencaptureproperty.ui \
     graphics/property/textproperty.ui \
     graphics/property/videoproperty.ui
 

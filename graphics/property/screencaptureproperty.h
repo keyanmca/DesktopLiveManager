@@ -20,11 +20,11 @@
 
 #include "propertybase.h"
 
-class QSpinBox;
-class QComboBox;
-class QCheckBox;
-
 class ScreenCapture;
+
+namespace Ui {
+class ScreenCaptureProperty;
+}
 
 class ScreenCaptureProperty : public PropertyBase
 {
@@ -42,7 +42,7 @@ private slots:
     void onFillByExpandingCaptureArea();
     void onFitByScaling();
     void onFullScreen();
-    void showCaptureArea();
+    void onSelectCapturedArea();
     void onCX();
     void onCY();
     void onCWidth();
@@ -50,13 +50,8 @@ private slots:
 
 private:
     // This class doesn't have any onwership of private members
-    QCheckBox *c_include_cursor_;
+    Ui::ScreenCaptureProperty *sc_ui;
     ScreenCapture* item_;
-    QComboBox *c_scalemode_;
-    QSpinBox *c_x_;
-    QSpinBox *c_y_;
-    QSpinBox *c_width_;
-    QSpinBox *c_height_;
 };
 
 #endif // SCREENCAPTUREPROPERTY_H
