@@ -20,15 +20,26 @@
 
 #include <QWidget>
 
+class QRubberBand;
+
 class ScreenAreaSelector : public QWidget
 {
     Q_OBJECT
 public:
     explicit ScreenAreaSelector(QWidget *parent = 0);
+    ~ScreenAreaSelector();
 signals:
-    void windowClosed();
+    void areaSelected(QRect);
+    //void windowClosed();
 protected:
-    bool event(QEvent *e) override;
+    //bool event(QEvent *e) override;
+    void mousePressEvent(QMouseEvent *) override;
+    void mouseMoveEvent(QMouseEvent *) override;
+    void mouseReleaseEvent(QMouseEvent *) override;
+
+private:
+    QPoint origin_;
+    QRubberBand *rubber_band_;
 };
 
 #endif // SCREENAREASELECTOR_H

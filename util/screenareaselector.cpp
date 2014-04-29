@@ -17,19 +17,38 @@
 
 #include "screenareaselector.h"
 
+#include <QRubberBand>
 #include <QEvent>
+#include <QMouseEvent>
 
 ScreenAreaSelector::ScreenAreaSelector(QWidget *parent) :
-    QWidget(parent)
+    QWidget(parent),
+    rubber_band_(0)
 {
-    setParent(0);
     setAttribute(Qt::WA_TranslucentBackground, true);
+    showFullScreen();
 }
 
-bool ScreenAreaSelector::event(QEvent *e)
+ScreenAreaSelector::~ScreenAreaSelector()
 {
-    if(e->type() == QEvent::Close) {
-        emit windowClosed();
-    }
-    return QWidget::event(e);
+}
+
+void ScreenAreaSelector::mousePressEvent(QMouseEvent *event)
+{
+    origin_ = event->pos();
+    if (!rubber_band_)
+        rubber_band_ = new QRubberBand(QRubberBand::Rectangle, this);
+    rubber_band_->setGeometry(QRect(origin_, QSize()));
+    rubber_band_->show();
+}
+
+void ScreenAreaSelector::mouseMoveEvent(QMouseEvent *event)
+{
+    rubber_band_->setGeometry(QRect(origin_, event->pos()).normalized());
+}
+
+void ScreenAreaSelector::mouseReleaseEvent(QMouseEvent *event)
+{
+    rubber_band_->hide();
+    emit areaSelected(QRect(origin_, event->pos()).normalized());
 }

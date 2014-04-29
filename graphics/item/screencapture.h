@@ -48,9 +48,10 @@ public:
     void fillByExpandingCaptureArea();
     void fitByScaling();
     void fullScreen();
-    void showAreaSelector();
+    void selectArea();
 
 public slots:
+    void onAreaSelected(const QRect &area);
     void onPixmapReady(QPixmap pixmap);
 
 signals:

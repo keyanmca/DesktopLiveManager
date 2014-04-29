@@ -60,7 +60,7 @@ ScreenCaptureProperty::ScreenCaptureProperty(QWidget *parent):
     connect(full_screen, SIGNAL(clicked()), this, SLOT(onFullScreen()));
     grid->addWidget(full_screen, row++, 1);
 
-    QPushButton *show_capture_area = new QPushButton("Show Area Selector", capture);
+    QPushButton *show_capture_area = new QPushButton("Select Captured Area", capture);
     connect(show_capture_area, SIGNAL(clicked()), this, SLOT(showCaptureArea()));
     grid->addWidget(show_capture_area, row++, 0, 1, 2);
 
@@ -185,7 +185,7 @@ void ScreenCaptureProperty::onFullScreen()
 void ScreenCaptureProperty::showCaptureArea()
 {
     if(!item_) return;
-    item_->showAreaSelector();
+    item_->selectArea();
 }
 
 void ScreenCaptureProperty::onCX()

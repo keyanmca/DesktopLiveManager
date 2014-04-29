@@ -78,9 +78,9 @@ void ScreenCapture::advance(int phase)
 {
     if(phase == 0 || !isVisible()) return;
 
-    if(area_selector_) {
-        setCapturedArea(area_selector_->geometry());
-    }
+    //if(area_selector_) {
+    //    setCapturedArea(area_selector_->geometry());
+    //}
 
     emit requestPixmap(screen_, QRect(topleft_, nativeSize()), size(),
                        include_cursor_, aspectRatioMode(), mode_);
@@ -181,14 +181,20 @@ void ScreenCapture::fullScreen()
     fitByScaling();
 }
 
-void ScreenCapture::showAreaSelector()
+void ScreenCapture::selectArea()
 {
     if(area_selector_) return;
     area_selector_ = new ScreenAreaSelector;
-    area_selector_->setGeometry(topleft_.x(), topleft_.y(),
-                                nativeSize().width(), nativeSize().height());
     area_selector_->show();
-    connect(area_selector_, &ScreenAreaSelector::windowClosed, [this]() { area_selector_ = 0; });
+    connect(area_selector_, SIGNAL(areaSelected(QRect)),
+            this, SLOT(onAreaSelected(const QRect&)));
+}
+
+void ScreenCapture::onAreaSelected(const QRect &area)
+{
+    delete area_selector_;
+    area_selector_ = 0;
+    setCapturedArea(area);
 }
 
 void ScreenCapture::onPixmapReady(QPixmap pixmap)
@@ -207,8 +213,8 @@ void ScreenCapture::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)
 ScreenCaptureMenu::ScreenCaptureMenu(QObject *parent) :
     CommonMenu(parent)
 {
-    connect(menu_->addAction("Show Area Selector"), &QAction::triggered,
-            [&]() { if(item_) { item_->showAreaSelector(); } });
+    connect(menu_->addAction("Select Captured Area"), &QAction::triggered,
+            [&]() { if(item_) { item_->selectArea(); } });
 
     QMenu *fit_and_fill = new QMenu("Fit And Fill", menu_);
     connect(fit_and_fill->addAction("Fill By Scaling"), &QAction::triggered,
