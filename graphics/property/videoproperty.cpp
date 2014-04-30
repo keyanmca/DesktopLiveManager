@@ -31,7 +31,7 @@ VideoProperty::VideoProperty(QWidget *parent) :
     item_(0)
 {
     QWidget *video = new QWidget;
-    ui->toolBox->addItem(video, QString("Video"));
+    ui->tabWidget->addTab(video, QString("Video"));
     video_ui->setupUi(video);
 
     QStyle *sty = QApplication::style();

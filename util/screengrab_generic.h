@@ -15,8 +15,6 @@
  * along with DLM.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifdef INCLUDED_FROM_SCREENGRAB_CPP
-
 #include "screengrab.h"
 #include "mousecursor.h"
 
@@ -71,5 +69,3 @@ void ScreenGrab::capture(
         emit pixmapReady(pixmap.scaled(target, AR_mode, TF_mode));
     }
 }
-
-#endif // INCLUDED_FROM_SCREENGRAB_CPP

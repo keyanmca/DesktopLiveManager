@@ -6,220 +6,258 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>259</width>
-    <height>376</height>
+    <width>294</width>
+    <height>337</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout">
+  <layout class="QVBoxLayout" name="verticalLayout_2">
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
+    <number>0</number>
+   </property>
    <item>
-    <widget class="QToolBox" name="toolBox">
+    <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
       <number>0</number>
      </property>
-     <widget class="QWidget" name="layout_">
-      <property name="geometry">
-       <rect>
-        <x>0</x>
-        <y>0</y>
-        <width>241</width>
-        <height>329</height>
-       </rect>
-      </property>
-      <attribute name="label">
+     <widget class="QWidget" name="tab">
+      <attribute name="title">
        <string>Layout</string>
       </attribute>
-      <layout class="QGridLayout" name="gridLayout">
-       <item row="2" column="1">
-        <widget class="QSpinBox" name="l_y_">
-         <property name="keyboardTracking">
-          <bool>false</bool>
+      <layout class="QVBoxLayout" name="verticalLayout">
+       <property name="leftMargin">
+        <number>0</number>
+       </property>
+       <property name="topMargin">
+        <number>0</number>
+       </property>
+       <property name="rightMargin">
+        <number>0</number>
+       </property>
+       <property name="bottomMargin">
+        <number>0</number>
+       </property>
+       <item>
+        <widget class="QScrollArea" name="scrollArea">
+         <property name="frameShape">
+          <enum>QFrame::NoFrame</enum>
          </property>
-         <property name="minimum">
-          <number>-2048</number>
+         <property name="widgetResizable">
+          <bool>true</bool>
          </property>
-         <property name="maximum">
-          <number>2048</number>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="1">
-        <widget class="QComboBox" name="l_pos_">
-         <item>
-          <property name="text">
-           <string>Manual</string>
+         <widget class="QWidget" name="scrollAreaWidgetContents">
+          <property name="geometry">
+           <rect>
+            <x>0</x>
+            <y>0</y>
+            <width>290</width>
+            <height>308</height>
+           </rect>
           </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Center</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>TopLeft</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>TopRight</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>BottomLeft</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>BottomRight</string>
-          </property>
-         </item>
-        </widget>
-       </item>
-       <item row="3" column="0">
-        <widget class="QLabel" name="label_6">
-         <property name="text">
-          <string>AspectRatio</string>
-         </property>
-        </widget>
-       </item>
-       <item row="5" column="1">
-        <widget class="QSpinBox" name="l_height_">
-         <property name="minimumSize">
-          <size>
-           <width>0</width>
-           <height>0</height>
-          </size>
-         </property>
-         <property name="keyboardTracking">
-          <bool>false</bool>
-         </property>
-         <property name="minimum">
-          <number>10</number>
-         </property>
-         <property name="maximum">
-          <number>2048</number>
-         </property>
-         <property name="singleStep">
-          <number>10</number>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="0">
-        <widget class="QLabel" name="label_2">
-         <property name="text">
-          <string>Y</string>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="0">
-        <widget class="QLabel" name="label">
-         <property name="text">
-          <string>X</string>
-         </property>
-        </widget>
-       </item>
-       <item row="5" column="0">
-        <widget class="QLabel" name="label_5">
-         <property name="text">
-          <string>Height</string>
-         </property>
-        </widget>
-       </item>
-       <item row="4" column="0">
-        <widget class="QLabel" name="label_4">
-         <property name="text">
-          <string>Width</string>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="0">
-        <widget class="QLabel" name="label_3">
-         <property name="text">
-          <string>Position</string>
-         </property>
-        </widget>
-       </item>
-       <item row="3" column="1">
-        <widget class="QComboBox" name="l_aspectratio_">
-         <item>
-          <property name="text">
-           <string>Keep</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Ignore</string>
-          </property>
-         </item>
-        </widget>
-       </item>
-       <item row="1" column="1">
-        <widget class="QSpinBox" name="l_x_">
-         <property name="keyboardTracking">
-          <bool>false</bool>
-         </property>
-         <property name="minimum">
-          <number>-2048</number>
-         </property>
-         <property name="maximum">
-          <number>2048</number>
-         </property>
-        </widget>
-       </item>
-       <item row="4" column="1">
-        <widget class="QSpinBox" name="l_width_">
-         <property name="minimumSize">
-          <size>
-           <width>0</width>
-           <height>0</height>
-          </size>
-         </property>
-         <property name="keyboardTracking">
-          <bool>false</bool>
-         </property>
-         <property name="minimum">
-          <number>10</number>
-         </property>
-         <property name="maximum">
-          <number>2048</number>
-         </property>
-         <property name="singleStep">
-          <number>10</number>
-         </property>
-        </widget>
-       </item>
-       <item row="6" column="0" colspan="2">
-        <widget class="QPushButton" name="l_default_">
-         <property name="text">
-          <string>Default Size</string>
-         </property>
-        </widget>
-       </item>
-       <item row="7" column="1">
-        <widget class="QDoubleSpinBox" name="l_opacity_">
-         <property name="keyboardTracking">
-          <bool>false</bool>
-         </property>
-         <property name="maximum">
-          <double>1.000000000000000</double>
-         </property>
-         <property name="singleStep">
-          <double>0.010000000000000</double>
-         </property>
-         <property name="value">
-          <double>1.000000000000000</double>
-         </property>
-        </widget>
-       </item>
-       <item row="7" column="0">
-        <widget class="QLabel" name="label_7">
-         <property name="text">
-          <string>Opacity</string>
-         </property>
+          <layout class="QGridLayout" name="gridLayout">
+           <item row="0" column="0">
+            <widget class="QLabel" name="label_3">
+             <property name="text">
+              <string>Position</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1">
+            <widget class="QComboBox" name="l_pos_">
+             <item>
+              <property name="text">
+               <string>Manual</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Center</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>TopLeft</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>TopRight</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>BottomLeft</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>BottomRight</string>
+              </property>
+             </item>
+            </widget>
+           </item>
+           <item row="1" column="0">
+            <widget class="QLabel" name="label">
+             <property name="text">
+              <string>X</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="1">
+            <widget class="QSpinBox" name="l_x_">
+             <property name="keyboardTracking">
+              <bool>false</bool>
+             </property>
+             <property name="minimum">
+              <number>-2048</number>
+             </property>
+             <property name="maximum">
+              <number>2048</number>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="0">
+            <widget class="QLabel" name="label_2">
+             <property name="text">
+              <string>Y</string>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="1">
+            <widget class="QSpinBox" name="l_y_">
+             <property name="keyboardTracking">
+              <bool>false</bool>
+             </property>
+             <property name="minimum">
+              <number>-2048</number>
+             </property>
+             <property name="maximum">
+              <number>2048</number>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="0">
+            <widget class="QLabel" name="label_6">
+             <property name="text">
+              <string>AspectRatio</string>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="1">
+            <widget class="QComboBox" name="l_aspectratio_">
+             <item>
+              <property name="text">
+               <string>Keep</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Ignore</string>
+              </property>
+             </item>
+            </widget>
+           </item>
+           <item row="4" column="0">
+            <widget class="QLabel" name="label_4">
+             <property name="text">
+              <string>Width</string>
+             </property>
+            </widget>
+           </item>
+           <item row="4" column="1">
+            <widget class="QSpinBox" name="l_width_">
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="keyboardTracking">
+              <bool>false</bool>
+             </property>
+             <property name="minimum">
+              <number>10</number>
+             </property>
+             <property name="maximum">
+              <number>2048</number>
+             </property>
+             <property name="singleStep">
+              <number>10</number>
+             </property>
+            </widget>
+           </item>
+           <item row="5" column="0">
+            <widget class="QLabel" name="label_5">
+             <property name="text">
+              <string>Height</string>
+             </property>
+            </widget>
+           </item>
+           <item row="5" column="1">
+            <widget class="QSpinBox" name="l_height_">
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="keyboardTracking">
+              <bool>false</bool>
+             </property>
+             <property name="minimum">
+              <number>10</number>
+             </property>
+             <property name="maximum">
+              <number>2048</number>
+             </property>
+             <property name="singleStep">
+              <number>10</number>
+             </property>
+            </widget>
+           </item>
+           <item row="6" column="0" colspan="2">
+            <widget class="QPushButton" name="l_default_">
+             <property name="text">
+              <string>Default Size</string>
+             </property>
+            </widget>
+           </item>
+           <item row="7" column="0">
+            <widget class="QLabel" name="label_7">
+             <property name="text">
+              <string>Opacity</string>
+             </property>
+            </widget>
+           </item>
+           <item row="7" column="1">
+            <widget class="QDoubleSpinBox" name="l_opacity_">
+             <property name="keyboardTracking">
+              <bool>false</bool>
+             </property>
+             <property name="maximum">
+              <double>1.000000000000000</double>
+             </property>
+             <property name="singleStep">
+              <double>0.010000000000000</double>
+             </property>
+             <property name="value">
+              <double>1.000000000000000</double>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
         </widget>
        </item>
       </layout>

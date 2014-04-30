@@ -67,8 +67,6 @@ void PropertyBase::update()
 {
     if(!item_) return;
     lockWith([this]() {
-        //static int count = 0;
-        //qDebug() << "update" << ++count;
         ui->l_pos_->setCurrentIndex(item_->position());
         ui->l_x_->setValue((int)qitem_->x());
         ui->l_y_->setValue((int)qitem_->y());
@@ -84,7 +82,7 @@ PropertyBase *PropertyBase::nullProperty()
     static PropertyBase *null = 0;
     if(null) { return null; }
     null = new PropertyBase;
-    null->ui->toolBox->hide();
+    null->ui->tabWidget->hide();
     return null;
 }
 

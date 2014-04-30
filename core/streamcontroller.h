@@ -31,8 +31,8 @@ class AudioController;
 class MediaProcessor;
 
 namespace Ui {
-    class GeneralTab;
-    class EncoderTab;
+    class GeneralSetting;
+    class EncoderSetting;
 }
 
 class StreamController : public QObject
@@ -41,7 +41,7 @@ class StreamController : public QObject
 
 public:
     explicit StreamController(GraphicsController *graphics, AudioController *audio,
-                              QWidget *general_tab, QWidget *encoder_tab, QObject *parent = 0);
+                              QWidget *general_setting, QWidget *encoder_setting, QObject *parent = 0);
     ~StreamController();
     bool start();
     void stop();
@@ -66,11 +66,8 @@ private:
     void setSize(const QSize &size);
     void setFramePeriod(int period);
 
-    QWidget *general_tab_; // no ownership
-    QWidget *encoder_tab_; // no ownership
-
-    Ui::GeneralTab *general_ui;
-    Ui::EncoderTab *encoder_ui;
+    Ui::GeneralSetting *general_ui;
+    Ui::EncoderSetting *encoder_ui;
 
     GraphicsController *graphics_; // no ownership
     AudioController *audio_; // no ownership

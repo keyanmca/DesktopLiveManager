@@ -43,7 +43,7 @@ class GraphicsController : public QObject
 public:
     // SINGLETON PATTERN
     static GraphicsController* createInstance(
-        QWidget *view, QWidget *scene_tab, QWidget *graphics_tab, QObject *parent = 0);
+        QWidget *view, QWidget *graphics_tab, QObject *parent = 0);
     static GraphicsController* instance();
     GraphicsController(const GraphicsController&) = delete;
     GraphicsController& operator=(const GraphicsController&) = delete;
@@ -87,7 +87,7 @@ private slots:
 private:
     class SceneItem;
 
-    GraphicsController(QWidget *view, QWidget *scene_tab, QWidget *graphics_tab, QObject *parent = 0);
+    GraphicsController(QWidget *view, QWidget *graphics_tab, QObject *parent = 0);
 
     // scene
     SceneItem* sceneItem(int row);
@@ -133,8 +133,9 @@ private:
     QSize size_;
     qreal scale_;
 
+    QMenu *scene_view_menu_;
+    QMenu *item_view_menu_;
     QMenu *scene_menu_;
-    QMenu *item_menu_;
 
     // QAbstractItemModel emits layoutChanged() before removing old items.
     // so, set reorder_ when layoutChanged() is emitted ,and then do work when removeRows() is emitted;

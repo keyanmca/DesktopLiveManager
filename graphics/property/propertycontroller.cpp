@@ -45,6 +45,7 @@ PropertyController::PropertyController(QWidget *property, QObject *parent) :
     p_text_(0)
 {
     property->setLayout(property_);
+    property_->setContentsMargins(0, 0, 0, 0);
 
     null_ = PropertyBase::nullProperty();
     property_->addWidget(null_);

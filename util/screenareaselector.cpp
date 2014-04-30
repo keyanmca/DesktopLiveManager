@@ -20,6 +20,7 @@
 #include <QRubberBand>
 #include <QEvent>
 #include <QMouseEvent>
+#include <QCursor>
 
 ScreenAreaSelector::ScreenAreaSelector(QWidget *parent) :
     QWidget(parent),
@@ -27,6 +28,7 @@ ScreenAreaSelector::ScreenAreaSelector(QWidget *parent) :
 {
     setAttribute(Qt::WA_TranslucentBackground, true);
     showFullScreen();
+    setCursor(QCursor(Qt::CrossCursor));
 }
 
 ScreenAreaSelector::~ScreenAreaSelector()

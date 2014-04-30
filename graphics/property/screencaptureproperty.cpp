@@ -29,7 +29,7 @@ ScreenCaptureProperty::ScreenCaptureProperty(QWidget *parent):
     item_(0)
 {
     QWidget *capture = new QWidget;
-    ui->toolBox->addItem(capture, QString("Screen Capture"));
+    ui->tabWidget->addTab(capture, QString("Screen Capture"));
     sc_ui->setupUi(capture);
 
     connect(sc_ui->include_cursor_, SIGNAL(stateChanged(int)), this, SLOT(onIncludeCursor()));

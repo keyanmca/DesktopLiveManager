@@ -30,12 +30,12 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    graphics_ = GraphicsController::createInstance(ui->view_, ui->scene_tab_, ui->graphics_tab_);
+    graphics_ = GraphicsController::createInstance(ui->view_, ui->graphics_tab_);
     graphics_->addScene("Default");
 
     audio_ = new AudioController;
 
-    stream_ = new StreamController(graphics_, audio_, ui->general_tab_, ui->encoder_tab_);
+    stream_ = new StreamController(graphics_, audio_, ui->general_setting_, ui->encoder_setting_);
 
     connect(ui->show_hide_, SIGNAL(clicked()), this, SLOT(toggleShowHide()));
     connect(ui->start_stop_, SIGNAL(clicked()), this, SLOT(toggleStartStop()));

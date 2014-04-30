@@ -78,10 +78,6 @@ void ScreenCapture::advance(int phase)
 {
     if(phase == 0 || !isVisible()) return;
 
-    //if(area_selector_) {
-    //    setCapturedArea(area_selector_->geometry());
-    //}
-
     emit requestPixmap(screen_, QRect(topleft_, nativeSize()), size(),
                        include_cursor_, aspectRatioMode(), mode_);
 }
@@ -98,9 +94,6 @@ bool ScreenCapture::doesIncludeCursor() const
 
 void ScreenCapture::setCapturedArea(const QRect &area)
 {
-    if(area_selector_) {
-        area_selector_->setGeometry(area);
-    }
     topleft_ = area.topLeft();
     setNativeSize(area.size());
     if(aspectRatioMode() == Qt::KeepAspectRatio) {

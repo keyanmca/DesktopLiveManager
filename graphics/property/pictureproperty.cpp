@@ -27,7 +27,7 @@ PictureProperty::PictureProperty(QWidget *parent) :
 {
     QWidget *picture = new QWidget;
 
-    ui->toolBox->addItem(picture, QString("Picture"));
+    ui->tabWidget->addTab(picture, QString("Picture"));
     picture_ui->setupUi(picture);
 
     connect(picture_ui->p_open_, SIGNAL(clicked()), this, SLOT(onOpen()));

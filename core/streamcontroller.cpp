@@ -54,13 +54,11 @@ const QSize kResolution_4_3[kResolution_4_3_Num] = {
 };
 
 StreamController::StreamController(GraphicsController *graphics, AudioController *audio,
-                                   QWidget *general_tab, QWidget *encoder_tab, QObject *parent):
+                                   QWidget *general_setting, QWidget *encoder_setting, QObject *parent):
     QObject(parent),
     /* ui related members */
-    general_tab_(general_tab),
-    encoder_tab_(encoder_tab),
-    general_ui(new Ui::GeneralTab),
-    encoder_ui(new Ui::EncoderTab),
+    general_ui(new Ui::GeneralSetting),
+    encoder_ui(new Ui::EncoderSetting),
     /* main members */
     graphics_(graphics),
     audio_(audio),
@@ -73,10 +71,10 @@ StreamController::StreamController(GraphicsController *graphics, AudioController
     rendered_(QImage(image_size_, QImage::Format_RGB888))
 {
     // init ui
-    general_ui->setupUi(general_tab_);
+    general_ui->setupUi(general_setting);
     connect(general_ui->open_dest_file_, SIGNAL(clicked()), this, SLOT(onOpenSaveFile()));
 
-    encoder_ui->setupUi(encoder_tab_);
+    encoder_ui->setupUi(encoder_setting);
     connect(encoder_ui->v_size_, SIGNAL(currentIndexChanged(int)), this, SLOT(onSizeChanged()));
     connect(encoder_ui->v_framerate_, SIGNAL(valueChanged(int)), this, SLOT(setFramerate(int)));
     for(int i = 0; i < kResolution_16_9_Num; ++i) {
@@ -225,7 +223,7 @@ void StreamController::process()
 void StreamController::onOpenSaveFile()
 {
     QString dest = QFileDialog::getSaveFileName(
-                general_tab_, QString("Destination File"), QDir::homePath());
+                0, QString("Destination File"), QDir::homePath());
     if(dest != QString()) {
         general_ui->dest_file_->setText(dest);
     }

@@ -17,9 +17,8 @@
 
 #include <QtGlobal>
 
-#define INCLUDED_FROM_SCREENGRAB_CPP
 #ifdef Q_OS_LINUX
-#include "screengrab_X11.cpp"
+#include "screengrab_X11.h"
 #else
-#include "screengrab_generic.cpp"
+#include "screengrab_generic.h"
 #endif

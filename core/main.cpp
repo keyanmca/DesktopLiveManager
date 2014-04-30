@@ -18,10 +18,23 @@
 #include "mainwindow.h"
 
 #include <QApplication>
+#include <QDebug>
+
+#ifdef Q_OS_LINUX
+    #include <X11/Xlib.h>
+#endif
 
 int main(int argc, char *argv[])
 {
+#ifdef Q_OS_LINUX
+    XInitThreads();
+#endif
+
     QApplication app(argc, argv);
+
+    //QFont font = QApplication::font();
+    //font.setPointSize(10);
+    //QApplication::setFont(font);
 
     MainWindow win;
     win.show();

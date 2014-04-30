@@ -35,7 +35,7 @@ TextProperty::TextProperty(QWidget *parent) :
 
     QWidget *text = new QWidget;
 
-    ui->toolBox->addItem(text, QString("Text"));
+    ui->tabWidget->addTab(text, QString("Text"));
     text_ui->setupUi(text);
 
     connect(text_ui->choose_font_, SIGNAL(clicked()), this, SLOT(onChooseFont()));

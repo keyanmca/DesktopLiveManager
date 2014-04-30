@@ -22,11 +22,14 @@
 
 #include <QGraphicsScene>
 
+class QMenu;
+
 class GraphicsScene : public QGraphicsScene
 {
     Q_OBJECT
 public:
     explicit GraphicsScene(QObject *parent = 0);
+    void setMenu(QMenu *menu);
 
 public slots:
     void setSelectedItemsPosition(IGraphicsItem::Position pos);
@@ -35,6 +38,9 @@ public slots:
 protected:
     void contextMenuEvent(QGraphicsSceneContextMenuEvent *event) override;
     void wheelEvent(QGraphicsSceneWheelEvent *wheelEvent) override;
+
+private:
+    QMenu *scene_menu_; // no ownership
 };
 
 #endif // GRAPHICSSCENE_H

@@ -28,7 +28,7 @@ CameraProperty::CameraProperty(QWidget *parent) :
     item_(0)
 {
     QWidget *camera = new QWidget;
-    ui->toolBox->addItem(camera, QString("Camera"));
+    ui->tabWidget->addTab(camera, QString("Camera"));
     camera_ui->setupUi(camera);
 
     connect(camera_ui->c_start_, SIGNAL(clicked()),

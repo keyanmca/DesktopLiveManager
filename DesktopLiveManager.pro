@@ -14,7 +14,6 @@ TEMPLATE = app
 LIBS += -lx264 -lmp3lame -lrtmp
 
 linux {
-    DEFINES += X11ScreenGrab
     QT += x11extras
     LIBS += -lXfixes -lX11 -lXext
 }
@@ -49,7 +48,9 @@ HEADERS += \
     util/flvstreamer.h \
     util/mousecursor.h \
     util/screenareaselector.h \
-    util/screengrab.h
+    util/screengrab.h \
+    util/screengrab_X11.h \
+    util/screengrab_generic.h
 
 SOURCES += \
     core/audiocontroller.cpp \
@@ -81,8 +82,6 @@ SOURCES += \
     util/flvstreamer.cpp \
     util/mousecursor.cpp \
     util/screenareaselector.cpp \
-    util/screengrab_X11.cpp \
-    util/screengrab_generic.cpp \
     util/screengrab.cpp
 
 FORMS    += \

@@ -25,8 +25,14 @@
 #include <QGraphicsItem>
 
 GraphicsScene::GraphicsScene(QObject *parent) :
-    QGraphicsScene(parent)
+    QGraphicsScene(parent),
+    scene_menu_(0)
 {
+}
+
+void GraphicsScene::setMenu(QMenu *menu)
+{
+    scene_menu_ = menu;
 }
 
 void GraphicsScene::setSelectedItemsPosition(IGraphicsItem::Position pos)
@@ -70,9 +76,9 @@ void GraphicsScene::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)
     } else {
         // scene menu
         clearSelection();
-        QMenu  menu;
-        menu.addAction(new QAction("scene", this));
-        menu.exec(event->screenPos());
+        if(scene_menu_) {
+            scene_menu_->exec(event->screenPos());
+        }
     }
 }
 

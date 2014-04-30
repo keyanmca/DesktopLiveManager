@@ -31,6 +31,7 @@
 #include "property/propertycontroller.h"
 
 #include <QHBoxLayout>
+#include <QVBoxLayout>
 #include <QWheelEvent>
 #include <QMenu>
 #include <QPainter>
@@ -46,7 +47,7 @@
 GraphicsController* GraphicsController::instance_ = 0;
 
 GraphicsController::GraphicsController(
-        QWidget *view, QWidget *scene_tab, QWidget *graphics_tab,QObject *parent) :
+        QWidget *view, QWidget *graphics_tab, QObject *parent) :
     QObject(parent),
     scene_model_(new ItemModel(this)),
     current_(0),
@@ -58,25 +59,30 @@ GraphicsController::GraphicsController(
     property_(0),
     size_(QSize()),
     scale_(1),
+    scene_view_menu_(0),
+    item_view_menu_(0),
+    scene_menu_(0),
     reorder_(false)
 {
-    // init scene tab
-    scene_view_ = new ItemView(scene_tab);
-    scene_view_->setModel(scene_model_);
-    QHBoxLayout *scene_layout = new QHBoxLayout;
-    scene_layout->addWidget(scene_view_);
-    scene_tab->setLayout(scene_layout);
-
     // init graphics tab
+    scene_view_ = new ItemView(graphics_tab);
+    scene_view_->setModel(scene_model_);
+    scene_view_->setFixedHeight(100);
     item_view_ = new ItemView(graphics_tab);
     item_view_->setModel(null_model_);
+    item_view_->setFixedHeight(100);
+
+    QHBoxLayout *views_layout = new QHBoxLayout;
+    views_layout->addWidget(scene_view_);
+    views_layout->addWidget(item_view_);
+
     // init property
-    QFrame *property_frame = new QFrame;
-    property_frame->setFixedWidth(360);
-    property_ = new PropertyController(property_frame, this);
-    QHBoxLayout *graphics_layout = new QHBoxLayout;
-    graphics_layout->addWidget(item_view_);
-    graphics_layout->addWidget(property_frame);
+    QWidget *property = new QWidget;
+    property_ = new PropertyController(property, this);
+
+    QVBoxLayout *graphics_layout = new QVBoxLayout;
+    graphics_layout->addLayout(views_layout);
+    graphics_layout->addWidget(property);
     graphics_tab->setLayout(graphics_layout);
 
     // init graphics view
@@ -100,12 +106,12 @@ GraphicsController::GraphicsController(
     QAction *set_current_scene = new QAction("switch", this);
     connect(set_current_scene, SIGNAL(triggered()), this, SLOT(setAsCurrent()));
 
-    scene_menu_ = new QMenu;
-    scene_menu_->addAction(add_scene);
-    scene_menu_->addAction(remove_scene);
-    scene_menu_->addAction(set_current_scene);
+    scene_view_menu_ = new QMenu;
+    scene_view_menu_->addAction(add_scene);
+    scene_view_menu_->addAction(remove_scene);
+    scene_view_menu_->addAction(set_current_scene);
 
-    scene_view_->setMenu(scene_menu_);
+    scene_view_->setMenu(scene_view_menu_);
 
     // item Action
     // add menu
@@ -163,23 +169,26 @@ GraphicsController::GraphicsController(
         if(current_) { current_->scene()->setSelectedItemsDefaultSize(); }
     });
 
-    item_menu_ = new QMenu;
-    item_menu_->addMenu(item_add_menu);
-    item_menu_->addAction(item_remove);
-    item_menu_->addSeparator();
-    item_menu_->addMenu(pos_menu);
-    item_menu_->addAction(default_size);
+    item_view_menu_ = new QMenu;
+    item_view_menu_->addMenu(item_add_menu);
+    item_view_menu_->addAction(item_remove);
+    item_view_menu_->addSeparator();
+    item_view_menu_->addMenu(pos_menu);
+    item_view_menu_->addAction(default_size);
 
-    item_view_->setMenu(item_menu_);
+    item_view_->setMenu(item_view_menu_);
     item_view_->installEventFilter(this);
+
+    scene_menu_ = new QMenu;
+    scene_menu_->addMenu(item_add_menu);
 }
 
 GraphicsController::~GraphicsController()
 {
     scene_view_->setMenu(0);
-    delete scene_menu_;
+    delete scene_view_menu_;
     item_view_->setMenu(0);
-    delete item_menu_;
+    delete item_view_menu_;
 
     unsetCurrentScene();
     Q_ASSERT(current_ == 0);
@@ -198,10 +207,10 @@ GraphicsController::~GraphicsController()
 }
 
 GraphicsController* GraphicsController::createInstance(
-        QWidget *view, QWidget *scene_tab, QWidget *graphics_tab, QObject *parent)
+        QWidget *view, QWidget *graphics_tab, QObject *parent)
 {
     if(!instance_) {
-        instance_ = new GraphicsController(view, scene_tab, graphics_tab, parent);
+        instance_ = new GraphicsController(view, graphics_tab, parent);
     }
     return instance_;
 }
@@ -235,7 +244,7 @@ void GraphicsController::render(QPainter *p)
 
 QMenu *GraphicsController::itemMenu()
 {
-    return item_menu_;
+    return item_view_menu_;
 }
 
 void GraphicsController::update()
@@ -292,6 +301,7 @@ bool GraphicsController::eventFilter(QObject *watched, QEvent *event)
 void GraphicsController::addScene(const QString &name)
 {
     SceneItem *scene_item = new SceneItem;
+    scene_item->scene()->setMenu(scene_menu_);
 
     QStandardItem *s_item = new QStandardItem(name);
     s_item->setData((quint64)scene_item);
@@ -521,7 +531,7 @@ void GraphicsController::setCurrentScene(GraphicsController::SceneItem *s_item)
     connect(item_model, SIGNAL(rowsRemoved(QModelIndex,int,int)), this, SLOT(reorder()));
     connect(item_model, SIGNAL(itemChanged(QStandardItem*)), this, SLOT(onItemChanged(QStandardItem*)));
 
-    item_view_->setMenu(item_menu_);
+    item_view_->setMenu(item_view_menu_);
 
     current_ = s_item;
 }

@@ -15,8 +15,6 @@
  * along with DLM.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifdef INCLUDED_FROM_SCREENGRAB_CPP
-
 #include "screengrab.h"
 #include "mousecursor.h"
 
@@ -113,6 +111,7 @@ void ScreenGrab::capture(
         d_->image_->data = d_->shminfo_->shmaddr;
     }
 
+    XLockDisplay(d_->display_);
     QPoint topleft = captured.topLeft();
     XShmGetImage(d_->display_,
                  RootWindow(d_->display_, DefaultScreen(d_->display_)),
@@ -127,6 +126,7 @@ void ScreenGrab::capture(
         cursor_->update();
         p.drawImage(cursor_->pos() - captured.topLeft(), cursor_->image());
     }
+    XUnlockDisplay(d_->display_);
 
     if(target == captured.size()) {
         emit pixmapReady(pixmap);
@@ -134,5 +134,3 @@ void ScreenGrab::capture(
         emit pixmapReady(pixmap.scaled(target, AR_mode, TF_mode));
     }
 }
-
-#endif // INCLUDED_FROM_SCREENGRAB_CPP

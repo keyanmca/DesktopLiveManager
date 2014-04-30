@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>Desktop Live Manager</string>
   </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QVBoxLayout" name="verticalLayout">
@@ -33,16 +33,66 @@
        <attribute name="title">
         <string>General</string>
        </attribute>
-      </widget>
-      <widget class="QWidget" name="encoder_tab_">
-       <attribute name="title">
-        <string>Encoder</string>
-       </attribute>
-      </widget>
-      <widget class="QWidget" name="scene_tab_">
-       <attribute name="title">
-        <string>Scene</string>
-       </attribute>
+       <layout class="QVBoxLayout" name="verticalLayout_2">
+        <property name="spacing">
+         <number>0</number>
+        </property>
+        <property name="leftMargin">
+         <number>0</number>
+        </property>
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <property name="rightMargin">
+         <number>0</number>
+        </property>
+        <property name="bottomMargin">
+         <number>0</number>
+        </property>
+        <item>
+         <widget class="QScrollArea" name="scrollArea">
+          <property name="frameShape">
+           <enum>QFrame::NoFrame</enum>
+          </property>
+          <property name="widgetResizable">
+           <bool>true</bool>
+          </property>
+          <widget class="QWidget" name="scrollAreaWidgetContents_2">
+           <property name="geometry">
+            <rect>
+             <x>0</x>
+             <y>0</y>
+             <width>827</width>
+             <height>602</height>
+            </rect>
+           </property>
+           <layout class="QVBoxLayout" name="verticalLayout_3">
+            <property name="spacing">
+             <number>0</number>
+            </property>
+            <property name="leftMargin">
+             <number>0</number>
+            </property>
+            <property name="topMargin">
+             <number>0</number>
+            </property>
+            <property name="rightMargin">
+             <number>0</number>
+            </property>
+            <property name="bottomMargin">
+             <number>0</number>
+            </property>
+            <item>
+             <widget class="QWidget" name="general_setting_" native="true"/>
+            </item>
+            <item>
+             <widget class="QWidget" name="encoder_setting_" native="true"/>
+            </item>
+           </layout>
+          </widget>
+         </widget>
+        </item>
+       </layout>
       </widget>
       <widget class="QWidget" name="graphics_tab_">
        <attribute name="title">
